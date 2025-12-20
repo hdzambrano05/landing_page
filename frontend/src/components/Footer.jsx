@@ -81,7 +81,7 @@ export default function Footer() {
                     <span>
                         Diseñado con estándares profesionales por{" "}
                         <a
-                            href="https://github.com/hdzambrano05"
+                            href="https://myportfoliohd.vercel.app/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-medium text-blue-400 hover:text-blue-300 transition"
