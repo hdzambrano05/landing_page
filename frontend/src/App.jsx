@@ -5,6 +5,7 @@ import Nosotros from "./pages/Nosotros"
 import Servicios from "./pages/Servicios"
 import Contacto from "./pages/Contacto"
 import Footer from "./components/Footer"
+import ChatBot from "./components/ChatBot"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/contacto" element={<Contacto />} />
       </Routes>
+      <ChatBot />
 
       <Footer />
     </>
