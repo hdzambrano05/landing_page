@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { servicios } from "../data/servicios";
+import FeedbackModal from "../components/FeedbackModal"
+
 
 export default function Servicios() {
     const location = useLocation();
 
     const [servicioActivo, setServicioActivo] = useState(null);
     const [detalleIndex, setDetalleIndex] = useState(null);
+    const [nombre, setNombre] = useState("")
+    const [email, setEmail] = useState("")
+    const [mensaje, setMensaje] = useState("")
+    const [loadingForm, setLoadingForm] = useState(false)
+    const [estadoForm, setEstadoForm] = useState(null)
 
     /* =========================
        Abrir modal desde Inicio
@@ -26,6 +33,40 @@ export default function Servicios() {
         setServicioActivo(null);
         setDetalleIndex(null);
     };
+
+    const enviarFormulario = async (e) => {
+        e.preventDefault()
+        setLoadingForm(true)
+        setEstadoForm(null)
+
+        try {
+            const res = await fetch("http://localhost:3001/contacto", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nombre,
+                    email,
+                    mensaje,
+                    servicio: servicioActivo?.titulo,
+                }),
+            })
+
+            if (!res.ok) throw new Error("Error al enviar")
+
+            setEstadoForm("success")
+            setNombre("")
+            setEmail("")
+            setMensaje("")
+        } catch (error) {
+            console.error(error)
+            setEstadoForm("error")
+        } finally {
+            setLoadingForm(false)
+        }
+    }
+
 
     return (
         <>
@@ -295,29 +336,56 @@ export default function Servicios() {
                                         Solicitar información
                                     </h3>
 
-                                    <form className="space-y-6">
+                                    <form onSubmit={enviarFormulario} className="space-y-6">
                                         <input
                                             type="text"
                                             placeholder="Nombre completo"
-                                            className="w-full p-4 rounded-xl bg-white/90 outline-none"
+                                            value={nombre}
+                                            onChange={(e) => setNombre(e.target.value)}
+                                            required
+                                            className="w-full p-4 rounded-xl bg-white/90 outline-none
+                   focus:ring-2 focus:ring-white"
                                         />
+
                                         <input
                                             type="email"
                                             placeholder="Correo electrónico"
-                                            className="w-full p-4 rounded-xl bg-white/90 outline-none"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                            className="w-full p-4 rounded-xl bg-white/90 outline-none
+                   focus:ring-2 focus:ring-white"
                                         />
+
                                         <textarea
                                             rows="4"
                                             placeholder="Cuéntanos tu necesidad"
-                                            className="w-full p-4 rounded-xl bg-white/90 resize-none outline-none"
+                                            value={mensaje}
+                                            onChange={(e) => setMensaje(e.target.value)}
+                                            required
+                                            className="w-full p-4 rounded-xl bg-white/90 resize-none outline-none
+                   focus:ring-2 focus:ring-white"
                                         />
+
                                         <button
                                             type="submit"
+                                            disabled={loadingForm}
                                             className="w-full py-4 rounded-xl bg-white text-blue-700
-                                                       font-bold hover:scale-[1.03] transition"
+                   font-bold text-lg
+                   hover:scale-[1.03]
+                   disabled:opacity-60 disabled:cursor-not-allowed
+                   transition"
                                         >
-                                            Enviar solicitud
+                                            {loadingForm ? "Enviando..." : "Enviar solicitud"}
                                         </button>
+
+                                        {/* ===== MODAL DE FEEDBACK ===== */}
+                                        {estadoForm && (
+                                            <FeedbackModal
+                                                tipo={estadoForm}
+                                                onClose={() => setEstadoForm(null)}
+                                            />
+                                        )}
                                     </form>
 
                                     <p className="mt-6 text-sm text-white/70">

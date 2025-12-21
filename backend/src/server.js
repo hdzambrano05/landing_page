@@ -1,9 +1,16 @@
+import dotenv from "dotenv"
+import path from "path"
+
+dotenv.config({
+    path: path.resolve(process.cwd(), ".env"),
+})
+
+// 👇 AHORA SÍ, después de dotenv
 import express from "express"
 import cors from "cors"
-import dotenv from "dotenv"
 import OpenAI from "openai"
+import { transporter } from "./config/mailer.js"
 
-dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -192,6 +199,79 @@ ${message}
         res.status(500).json({
             reply:
                 "Ocurrió un error al procesar tu solicitud. Intenta nuevamente más tarde.",
+        })
+    }
+})
+/* ================================
+   ENDPOINT CONTACTO
+================================ */
+
+app.post("/contacto", async (req, res) => {
+    try {
+        const { nombre, email, mensaje, servicio } = req.body
+
+        if (!nombre || !email || !mensaje) {
+            return res.status(400).json({
+                ok: false,
+                message: "Todos los campos son obligatorios.",
+            })
+        }
+
+        const mailOptions = {
+            from: `"Formulario Web - Conrado Seguros" <${process.env.EMAIL_EMPRESA}>`,
+            to: process.env.EMAIL_DESTINO,
+            subject: servicio
+                ? `📩 Nueva solicitud del servicio: ${servicio}`
+                : "📩 Nueva solicitud desde la página web",
+            html: `
+                <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:30px;">
+                    <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:12px; padding:30px;">
+                        
+                        <h2 style="color:#1e3a8a; margin-bottom:20px;">
+                            Nueva solicitud de información
+                        </h2>
+
+                        ${servicio ? `
+                        <p style="margin:15px 0; font-size:16px;">
+                            <strong>Servicio solicitado:</strong>
+                            <span style="color:#1e40af;">${servicio}</span>
+                        </p>
+                        ` : ""}
+
+                        <hr style="margin:20px 0;" />
+
+                        <p><strong>Nombre:</strong> ${nombre}</p>
+                        <p><strong>Correo:</strong> ${email}</p>
+
+                        <p><strong>Mensaje:</strong></p>
+
+                        <p style="background:#f1f5f9; padding:15px; border-radius:8px;">
+                            ${mensaje}
+                        </p>
+
+                        <hr style="margin:30px 0;" />
+
+                        <p style="font-size:14px; color:#666;">
+                            Conrado Seguros – Formulario Web<br/>
+                            Este mensaje fue generado automáticamente.
+                        </p>
+                    </div>
+                </div>
+            `,
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        res.json({
+            ok: true,
+            message: "Mensaje enviado correctamente.",
+        })
+    } catch (error) {
+        console.error("❌ Error enviando correo:", error)
+
+        res.status(500).json({
+            ok: false,
+            message: "Error al enviar el mensaje. Intenta más tarde.",
         })
     }
 })
