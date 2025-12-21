@@ -79,15 +79,7 @@ export default function Footer() {
                     </span>
 
                     <span>
-                        Diseñado con estándares profesionales por{" "}
-                        <a
-                            href="https://myportfoliohd.vercel.app/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-blue-400 hover:text-blue-300 transition"
-                        >
-                            Harold Zambrano
-                        </a>
+                        Diseñado con estándares profesionales
                     </span>
                 </div>
             </div>
