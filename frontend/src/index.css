@@ -110,3 +110,43 @@
     transform: translateY(0);
   }
 }
+
+/* ================= SCROLL PREMIUM ================= */
+.scroll-custom {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.7) transparent;
+  scroll-behavior: smooth;
+}
+
+/* Chrome / Edge / Safari */
+.scroll-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-custom::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 20px;
+}
+
+.scroll-custom::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+      #3b82f6,
+      #6366f1);
+  border-radius: 20px;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+.scroll-custom::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg,
+      #2563eb,
+      #4f46e5);
+}
+
+/* Scroll invisible hasta hover (opcional) */
+.scroll-custom::-webkit-scrollbar {
+  width: 0;
+}
+
+.scroll-custom:hover::-webkit-scrollbar {
+  width: 8px;
+}

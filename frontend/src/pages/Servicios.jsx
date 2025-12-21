@@ -30,19 +30,46 @@ export default function Servicios() {
     return (
         <>
             {/* ================= HERO ================= */}
-            <section className="relative py-28 md:py-32 overflow-hidden bg-linear-to-br from-blue-50 via-white to-blue-100">
-                {/* Fondo geométrico */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute -top-32 -left-32 w-125 h-125 bg-blue-400/20 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -right-40 w-105 h-105 bg-cyan-400/20 rounded-full blur-3xl" />
-                    <div className="absolute inset-0 flex justify-center items-center">
-                        <div className="w-150 h-150 border border-blue-200/40 rotate-45 rounded-3xl"></div>
+            <section className="relative py-28 md:py-32 overflow-hidden
+                    bg-linear-to-br from-blue-50 via-white to-blue-100">
+
+                {/* ===== FONDO ANIMADO ===== */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+
+                    {/* Gradiente animado */}
+                    <div className="absolute inset-0
+                        bg-linear-to-r from-blue-200/30 via-indigo-200/30 to-cyan-200/30
+                        animate-gradientMove" />
+
+                    {/* Glow flotantes */}
+                    <div className="absolute -top-40 -left-40 w-96 h-96
+                        bg-blue-500/30 rounded-full blur-3xl
+                        animate-floatSlow" />
+
+                    <div className="absolute top-1/3 -right-40 w-80 h-80
+                        bg-indigo-500/30 rounded-full blur-3xl
+                        animate-floatReverse" />
+
+                    {/* Figuras geométricas */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-96 h-96 border border-blue-200/40
+                            rounded-3xl rotate-45
+                            animate-rotateSlow" />
                     </div>
+
+                    <div className="absolute bottom-24 left-24 w-24 h-24
+                        border border-indigo-300/40 rounded-xl
+                        rotate-12 animate-floatSlow" />
+
+                    <div className="absolute top-24 right-32 w-16 h-16
+                        bg-blue-300/20 rounded-full
+                        animate-floatReverse" />
                 </div>
 
-                {/* Contenido */}
+                {/* ===== CONTENIDO (IGUAL) ===== */}
                 <div className="relative max-w-7xl mx-auto px-6 text-center">
-                    <span className="inline-block mb-4 px-5 py-1 text-xs tracking-widest uppercase bg-blue-100 text-blue-700 rounded-full">
+                    <span className="inline-block mb-4 px-5 py-1 text-xs tracking-widest uppercase
+                         bg-blue-100 text-blue-700 rounded-full">
                         Portafolio
                     </span>
 
@@ -59,187 +86,249 @@ export default function Servicios() {
                 </div>
             </section>
 
+            {/* ================= ANIMACIONES ================= */}
+            <style jsx>{`
+@keyframes gradientMove {
+    0% { transform: translateX(0%); }
+    50% { transform: translateX(-10%); }
+    100% { transform: translateX(0%); }
+}
+.animate-gradientMove {
+    animation: gradientMove 12s ease-in-out infinite;
+}
+
+@keyframes floatSlow {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+    100% { transform: translateY(0px); }
+}
+.animate-floatSlow {
+    animation: floatSlow 10s ease-in-out infinite;
+}
+
+@keyframes floatReverse {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(25px); }
+    100% { transform: translateY(0px); }
+}
+.animate-floatReverse {
+    animation: floatReverse 12s ease-in-out infinite;
+}
+
+@keyframes rotateSlow {
+    from { transform: rotate(45deg); }
+    to { transform: rotate(405deg); }
+}
+.animate-rotateSlow {
+    animation: rotateSlow 40s linear infinite;
+}
+`}</style>
+
+
             {/* ================= CARDS ================= */}
-            <section className="py-24 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <section className="relative py-28 bg-linear-to-br from-slate-50 via-white to-blue-50">
+                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {servicios.map((servicio) => (
                         <div
                             key={servicio.id}
-                            className="group bg-white rounded-3xl shadow-xl border border-gray-100
-                                       overflow-hidden hover:shadow-2xl hover:scale-105
-                                       transition-all duration-500"
+                            onClick={() => {
+                                setServicioActivo(servicio);
+                                setDetalleIndex(null);
+                            }}
+                            className="group relative cursor-pointer
+                           rounded-[2.2rem] overflow-hidden
+                           bg-white/80 backdrop-blur-xl
+                           border border-white/60
+                           shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+                           hover:shadow-[0_35px_90px_rgba(0,0,0,0.18)]
+                           hover:-translate-y-3
+                           transition-all duration-500"
                         >
+                            {/* Glow hover */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition">
+                                <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl" />
+                                <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl" />
+                            </div>
+
                             {/* Imagen */}
-                            <div className="relative h-48 overflow-hidden">
+                            <div className="relative h-52 overflow-hidden">
                                 <img
                                     src={servicio.imagen}
                                     alt={servicio.titulo}
-                                    className="w-full h-full object-cover transition-transform
-                                               duration-500 group-hover:scale-110"
+                                    className="w-full h-full object-cover
+                                   transition-transform duration-700
+                                   group-hover:scale-110"
                                 />
+
+                                {/* Overlay gradient */}
+                                <div className="absolute inset-0 bg-linear-to-t
+                                    from-black/40 via-black/10 to-transparent" />
                             </div>
 
                             {/* Contenido */}
-                            <div className="p-8">
-                                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                            <div className="relative p-8 space-y-4">
+                                <h3 className="text-2xl font-extrabold text-gray-900 leading-tight">
                                     {servicio.titulo}
                                 </h3>
 
-                                <p className="text-gray-600 mb-6">
+                                <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
                                     {servicio.descripcion}
                                 </p>
 
-                                <button
-                                    onClick={() => {
-                                        setServicioActivo(servicio);
-                                        setDetalleIndex(null);
-                                    }}
-                                    className="inline-flex items-center gap-2 text-blue-600
-                                               font-semibold hover:gap-3 transition-all"
-                                >
-                                    Ver detalles →
-                                </button>
+                                {/* CTA */}
+                                <div className="flex items-center justify-between pt-4">
+                                    <span className="inline-flex items-center gap-2
+                                         text-blue-600 font-semibold
+                                         transition-all group-hover:gap-3">
+                                        Explorar servicio →
+                                    </span>
+
+                                    {/* Icono flotante */}
+                                    <div className="w-10 h-10 rounded-full
+                                        bg-blue-600/10 text-blue-600
+                                        flex items-center justify-center
+                                        group-hover:bg-blue-600
+                                        group-hover:text-white
+                                        transition">
+                                        →
+                                    </div>
+                                </div>
                             </div>
+
+                            {/* Borde animado */}
+                            <div className="absolute inset-0 rounded-[2.2rem]
+                                ring-1 ring-transparent
+                                group-hover:ring-blue-500/30 transition" />
                         </div>
                     ))}
                 </div>
             </section>
 
+
             {/* ================= MODAL ================= */}
             {servicioActivo && (
-                <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm
-                                flex items-center justify-center px-4 animate-fadeIn">
-                    <div className="relative bg-white w-full max-w-6xl rounded-3xl
-                                    shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-md">
+                    <div className="relative w-full max-w-7xl h-[90vh] bg-white rounded-[2.5rem]
+                                    shadow-[0_40px_120px_rgba(0,0,0,0.3)] overflow-hidden">
+
                         {/* Cerrar */}
                         <button
                             onClick={cerrarModal}
-                            className="absolute top-5 right-6 text-3xl
-                                       text-gray-400 hover:text-black transition"
+                            className="absolute top-6 right-6 z-50 w-12 h-12
+                                       rounded-full bg-white/80 backdrop-blur
+                                       flex items-center justify-center
+                                       text-2xl text-gray-500 hover:text-black
+                                       hover:scale-110 transition"
                         >
                             ×
                         </button>
 
-                        <div className="grid lg:grid-cols-2">
-                            {/* INFO */}
-                            <div className="p-10 space-y-8">
-                                <h2 className="text-4xl font-extrabold text-gray-800">
-                                    {servicioActivo.titulo}
-                                </h2>
+                        <div className="grid lg:grid-cols-2 h-full">
 
-                                <p className="text-gray-600">
-                                    {servicioActivo.descripcion}
-                                </p>
+                            {/* ================= INFO (SCROLL REAL) ================= */}
+                            <div className="p-12 flex flex-col h-full overflow-hidden">
+                                <div className="flex-1 overflow-y-auto pr-4 scroll-custom space-y-8">
 
-                                <div className="space-y-4">
-                                    {servicioActivo.detalles?.map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className="border rounded-2xl overflow-hidden"
-                                        >
-                                            <button
-                                                onClick={() =>
-                                                    setDetalleIndex(
-                                                        detalleIndex === index ? null : index
-                                                    )
-                                                }
-                                                className="w-full flex justify-between
-                                                           items-center p-5
-                                                           bg-white hover:bg-gray-50 transition"
+                                    <span className="inline-block px-4 py-1 text-sm font-semibold
+                                                     rounded-full bg-blue-100 text-blue-700">
+                                        Servicio especializado
+                                    </span>
+
+                                    <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
+                                        {servicioActivo.titulo}
+                                    </h2>
+
+                                    <p className="text-lg text-gray-600 max-w-xl">
+                                        {servicioActivo.descripcion}
+                                    </p>
+
+                                    <div className="space-y-4">
+                                        {servicioActivo.detalles?.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="border border-gray-200 rounded-2xl overflow-hidden"
                                             >
-                                                <span className="font-semibold text-gray-800">
-                                                    {item.titulo}
-                                                </span>
-                                                <span className="text-2xl text-blue-600">
-                                                    {detalleIndex === index ? "−" : "+"}
-                                                </span>
-                                            </button>
+                                                <button
+                                                    onClick={() =>
+                                                        setDetalleIndex(
+                                                            detalleIndex === index ? null : index
+                                                        )
+                                                    }
+                                                    className="w-full flex justify-between items-center
+                                                               p-6 bg-white hover:bg-blue-50 transition"
+                                                >
+                                                    <span className="font-semibold text-gray-900">
+                                                        {item.titulo}
+                                                    </span>
 
-                                            {detalleIndex === index && (
-                                                <div className="p-5 bg-gray-50 border-t animate-fadeUp">
-                                                    <p className="text-gray-600 leading-relaxed">
-                                                        {item.descripcion}
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
+                                                    <span className={`w-8 h-8 flex items-center justify-center
+                                                                      rounded-full font-bold transition
+                                                                      ${detalleIndex === index
+                                                            ? "bg-blue-600 text-white rotate-180"
+                                                            : "bg-gray-100 text-gray-600"
+                                                        }`}>
+                                                        +
+                                                    </span>
+                                                </button>
+
+                                                {detalleIndex === index && (
+                                                    <div className="p-6 bg-gray-50 border-t">
+                                                        <p className="text-gray-600">
+                                                            {item.descripcion}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="pt-6 mt-6 border-t text-sm text-gray-400 shrink-0">
+                                    Atención personalizada · Respuesta rápida
                                 </div>
                             </div>
 
-                            {/* FORM */}
-                            <div className="bg-linear-to-b from-blue-50 to-white p-10">
-                                <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                                    Solicitar información
-                                </h3>
+                            {/* ================= FORM ================= */}
+                            <div className="relative flex items-center bg-linear-to-br from-blue-600 via-indigo-600 to-blue-800">
+                                <div className="w-full p-12 bg-white/10 backdrop-blur-xl">
+                                    <h3 className="text-3xl font-bold text-white mb-8">
+                                        Solicitar información
+                                    </h3>
 
-                                <form className="space-y-5">
-                                    <input
-                                        type="text"
-                                        placeholder="Nombre completo"
-                                        className="w-full p-4 rounded-xl border
-                                                   focus:ring-2 focus:ring-blue-500
-                                                   outline-none transition"
-                                    />
-                                    <input
-                                        type="email"
-                                        placeholder="Correo electrónico"
-                                        className="w-full p-4 rounded-xl border
-                                                   focus:ring-2 focus:ring-blue-500
-                                                   outline-none transition"
-                                    />
-                                    <textarea
-                                        rows="4"
-                                        placeholder="Mensaje"
-                                        className="w-full p-4 rounded-xl border
-                                                   focus:ring-2 focus:ring-blue-500
-                                                   outline-none transition"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="w-full py-4 bg-blue-600
-                                                   hover:bg-blue-700 text-white
-                                                   rounded-xl font-semibold shadow-lg transition"
-                                    >
-                                        Enviar mensaje
-                                    </button>
-                                </form>
+                                    <form className="space-y-6">
+                                        <input
+                                            type="text"
+                                            placeholder="Nombre completo"
+                                            className="w-full p-4 rounded-xl bg-white/90 outline-none"
+                                        />
+                                        <input
+                                            type="email"
+                                            placeholder="Correo electrónico"
+                                            className="w-full p-4 rounded-xl bg-white/90 outline-none"
+                                        />
+                                        <textarea
+                                            rows="4"
+                                            placeholder="Cuéntanos tu necesidad"
+                                            className="w-full p-4 rounded-xl bg-white/90 resize-none outline-none"
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="w-full py-4 rounded-xl bg-white text-blue-700
+                                                       font-bold hover:scale-[1.03] transition"
+                                        >
+                                            Enviar solicitud
+                                        </button>
+                                    </form>
+
+                                    <p className="mt-6 text-sm text-white/70">
+                                        Nos comunicaremos contigo lo antes posible.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
-
-            {/* ================= ANIMACIONES ================= */}
-            <style jsx>{`
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                .animate-fadeIn {
-                    animation: fadeIn 0.4s ease forwards;
-                }
-
-                @keyframes fadeUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                .animate-fadeUp {
-                    animation: fadeUp 0.3s ease forwards;
-                }
-            `}</style>
         </>
     );
 }
