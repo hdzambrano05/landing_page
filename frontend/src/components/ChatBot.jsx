@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { MessageCircle, X, Send } from "lucide-react"
 
 /* =======================
-   FORMATO DE TEXTO (NEGRILLA)
+   FORMATO TEXTO
 ======================= */
 const formatMessage = (text) => {
     return text
@@ -16,7 +16,7 @@ export default function ChatBot() {
         {
             role: "assistant",
             content:
-                "Bienvenido. Soy el asistente virtual institucional de **Conrado Seguros**. Estoy disponible para brindarle información sobre nuestra empresa y servicios. ¿En qué puedo ayudarle?",
+                "Bienvenido. Soy el asistente virtual institucional de **Conrado Seguros**.\n\nEstoy disponible para brindarle información sobre nuestros servicios y asesoría personalizada.",
         },
     ])
     const [input, setInput] = useState("")
@@ -24,9 +24,6 @@ export default function ChatBot() {
 
     const messagesEndRef = useRef(null)
 
-    /* =======================
-       AUTO SCROLL
-    ======================= */
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages, loading])
@@ -57,7 +54,7 @@ export default function ChatBot() {
                 {
                     role: "assistant",
                     content:
-                        "Ha ocurrido un error al procesar su solicitud. Por favor intente nuevamente.",
+                        "Ocurrió un inconveniente al procesar su solicitud. Por favor, intente nuevamente.",
                 },
             ])
         } finally {
@@ -67,40 +64,39 @@ export default function ChatBot() {
 
     return (
         <>
-            {/* =======================
-                BOTÓN FLOTANTE
-            ======================= */}
+            {/* BOTÓN FLOTANTE */}
             {!open && (
                 <button
                     onClick={() => setOpen(true)}
                     className="fixed bottom-6 right-6 z-50
-                    w-14 h-14 rounded-full bg-blue-700 text-white
-                    flex items-center justify-center shadow-xl
+                    w-14 h-14 rounded-full
+                    bg-gradient-to-br from-blue-700 to-blue-900
+                    text-white shadow-2xl
+                    flex items-center justify-center
                     hover:scale-105 transition"
                 >
                     <MessageCircle className="w-7 h-7" />
                 </button>
             )}
 
-            {/* =======================
-                CHAT
-            ======================= */}
+            {/* CHAT */}
             {open && (
                 <div
                     className="fixed bottom-6 right-6 z-50
                     w-[380px] h-[560px]
-                    bg-white rounded-3xl shadow-2xl border
-                    flex flex-col overflow-hidden"
+                    rounded-3xl overflow-hidden
+                    shadow-[0_25px_60px_-15px_rgba(0,0,0,0.25)]
+                    bg-white flex flex-col"
                 >
                     {/* HEADER */}
-                    <div className="bg-gradient-to-r from-blue-700 to-blue-800
-                        text-white px-5 py-4 flex justify-between items-center">
+                    <div className="bg-gradient-to-r from-blue-800 to-blue-900
+                        px-5 py-4 text-white flex justify-between items-center">
                         <div>
                             <p className="font-semibold text-sm">
                                 Asistente Conrado Seguros
                             </p>
-                            <p className="text-xs opacity-90">
-                                Atención institucional
+                            <p className="text-xs opacity-80">
+                                En línea · Atención institucional
                             </p>
                         </div>
                         <button onClick={() => setOpen(false)}>
@@ -109,8 +105,8 @@ export default function ChatBot() {
                     </div>
 
                     {/* MENSAJES */}
-                    <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto
-                        bg-gradient-to-b from-gray-50 to-gray-100 text-sm">
+                    <div className="flex-1 px-4 py-4 space-y-4 overflow-y-auto
+                        bg-gradient-to-b from-slate-50 to-slate-100 text-sm">
 
                         {messages.map((msg, i) => (
                             <div
@@ -122,13 +118,15 @@ export default function ChatBot() {
                             >
                                 <div
                                     className={`
-                                        inline-block max-w-[75%]
-                                        px-4 py-2 leading-relaxed
-                                        whitespace-pre-wrap break-words
-                                        animate-[fadeIn_0.25s_ease-out]
+                                        inline-block max-w-[80%]
+                                        px-4 py-2.5
+                                        rounded-2xl
+                                        leading-relaxed
+                                        shadow-sm
+                                        text-[13.5px]
                                         ${msg.role === "user"
-                                            ? "bg-blue-700 text-white rounded-2xl rounded-br-sm shadow-md"
-                                            : "bg-white text-gray-800 rounded-2xl rounded-bl-sm shadow-sm border-l-4 border-blue-700"
+                                            ? "bg-blue-800 text-white rounded-br-md"
+                                            : "bg-white text-gray-800 border border-gray-200 rounded-bl-md"
                                         }
                                     `}
                                 >
@@ -142,8 +140,8 @@ export default function ChatBot() {
                         ))}
 
                         {loading && (
-                            <div className="inline-block bg-white px-4 py-2
-                                rounded-xl shadow-sm text-gray-500 text-xs">
+                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                                <span className="w-2 h-2 bg-blue-700 rounded-full animate-pulse"></span>
                                 Redactando respuesta…
                             </div>
                         )}
@@ -152,24 +150,26 @@ export default function ChatBot() {
                     </div>
 
                     {/* INPUT */}
-                    <div className="border-t px-4 py-3 bg-white">
+                    <div className="border-t bg-white px-4 py-3">
                         <div className="flex items-center gap-2
                             bg-gray-100 rounded-2xl px-3 py-2
-                            focus-within:ring-2 focus-within:ring-blue-700">
+                            focus-within:ring-2 focus-within:ring-blue-800">
                             <input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) =>
                                     e.key === "Enter" && sendMessage()
                                 }
-                                placeholder="Escriba su consulta..."
-                                className="flex-1 bg-transparent text-sm
-                                outline-none text-gray-800 placeholder-gray-500"
+                                placeholder="Escriba su consulta…"
+                                className="flex-1 bg-transparent
+                                outline-none text-sm
+                                text-gray-800 placeholder-gray-500"
                             />
                             <button
                                 onClick={sendMessage}
-                                className="bg-blue-700 text-white
-                                p-2 rounded-xl hover:bg-blue-800 transition"
+                                className="bg-blue-800 text-white
+                                p-2 rounded-xl
+                                hover:bg-blue-900 transition"
                             >
                                 <Send className="w-4 h-4" />
                             </button>
