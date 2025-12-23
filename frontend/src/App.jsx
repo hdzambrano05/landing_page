@@ -6,11 +6,14 @@ import Servicios from "./pages/Servicios"
 import Contacto from "./pages/Contacto"
 import Footer from "./components/Footer"
 import ChatBot from "./components/ChatBot"
+import ScrollToTop from "./components/ScrollToTop"
 
 function App() {
   return (
     <>
       <Navbar />
+
+      <ScrollToTop />
 
       <Routes>
         <Route path="/" element={<Inicio />} />
@@ -18,8 +21,8 @@ function App() {
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/contacto" element={<Contacto />} />
       </Routes>
-      <ChatBot />
 
+      <ChatBot />
       <Footer />
     </>
   )

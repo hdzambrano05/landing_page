@@ -14,16 +14,6 @@ export default function Inicio() {
     const carruselRef = useRef(null);
     const [paused, setPaused] = useState(false);
 
-    /* ================= SCROLL MANUAL ================= */
-    const scrollCarrusel = (direction) => {
-        if (!carruselRef.current) return;
-
-        carruselRef.current.scrollBy({
-            left: direction === "left" ? -360 : 360,
-            behavior: "smooth",
-        });
-    };
-
     /* ================= AUTO SCROLL INFINITO (PRO) ================= */
     useEffect(() => {
         const container = carruselRef.current;
@@ -126,15 +116,6 @@ export default function Inicio() {
 
                     {/* Carrusel */}
                     <div className="relative">
-                        {/* Flecha izquierda */}
-                        <button
-                            onClick={() => scrollCarrusel("left")}
-                            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20
-                                       bg-white/80 backdrop-blur-md p-3 rounded-full
-                                       shadow-lg hover:scale-110 transition"
-                        >
-                            <ArrowLeft className="w-6 h-6 text-gray-800" />
-                        </button>
 
                         <div
                             ref={carruselRef}
@@ -184,16 +165,6 @@ export default function Inicio() {
                                 )
                             )}
                         </div>
-
-                        {/* Flecha derecha */}
-                        <button
-                            onClick={() => scrollCarrusel("right")}
-                            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20
-                                       bg-white/80 backdrop-blur-md p-3 rounded-full
-                                       shadow-lg hover:scale-110 transition"
-                        >
-                            <ArrowRight className="w-6 h-6 text-gray-800" />
-                        </button>
                     </div>
 
                     {/* CTA */}
