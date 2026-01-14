@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { servicios } from "../data/servicios";
-import FeedbackModal from "../components/FeedbackModal"
+import FeedbackModal from "../components/FeedbackModal";
+import {
+    SlidersHorizontal,
+    Search,
+    Layers,
+    ArrowDownAZ,
+    Check
+} from "lucide-react";
+
 
 
 export default function Servicios() {
@@ -14,6 +22,15 @@ export default function Servicios() {
     const [mensaje, setMensaje] = useState("")
     const [loadingForm, setLoadingForm] = useState(false)
     const [estadoForm, setEstadoForm] = useState(null)
+
+
+    const [mostrarFiltros, setMostrarFiltros] = useState(false)
+    const [busqueda, setBusqueda] = useState("")
+    const [categoria, setCategoria] = useState("Todos")
+    const [orden, setOrden] = useState("az")
+
+    const categorias = ["Todos", ...new Set(servicios.map(s => s.categoria))]
+
 
     /* =========================
        Abrir modal desde Inicio
@@ -66,6 +83,20 @@ export default function Servicios() {
             setLoadingForm(false)
         }
     }
+
+    const serviciosFiltrados = servicios
+        .filter(s =>
+            s.titulo.toLowerCase().includes(busqueda.toLowerCase()) &&
+            (categoria === "Todos" || s.categoria === categoria)
+        )
+        .sort((a, b) =>
+            orden === "az"
+                ? a.titulo.localeCompare(b.titulo)
+                : b.titulo.localeCompare(a.titulo)
+        )
+
+
+
 
 
     return (
@@ -165,11 +196,144 @@ export default function Servicios() {
 }
 `}</style>
 
+            <section className="py-10 bg-slate-50">
+                <div className="max-w-7xl mx-auto px-6 flex justify-end relative">
+
+                    {/* BOTÓN FILTROS */}
+                    <button
+                        onClick={() => setMostrarFiltros(!mostrarFiltros)}
+                        className="
+                group flex items-center gap-3
+                px-7 py-3 rounded-full
+                bg-linear-to-r from-blue-600 to-indigo-600
+                text-white font-semibold
+                shadow-lg shadow-blue-600/30
+                hover:shadow-xl hover:shadow-blue-600/40
+                hover:scale-[1.03]
+                transition-all duration-300
+            "
+                    >
+                        <SlidersHorizontal className="w-5 h-5 group-hover:rotate-90 transition" />
+                        Filtrar y ordenar
+                    </button>
+
+                    {/* PANEL FLOTANTE */}
+                    {mostrarFiltros && (
+                        <div
+                            className="
+                    absolute top-16 right-0 z-50 w-96
+                    bg-white/90 backdrop-blur-xl
+                    rounded-3xl
+                    shadow-[0_30px_80px_rgba(0,0,0,0.18)]
+                    border border-white/60
+                    p-7 space-y-6
+                    animate-fadeIn
+                "
+                        >
+                            {/* HEADER */}
+                            <div className="flex items-center justify-between">
+                                <h4 className="text-lg font-extrabold text-gray-900">
+                                    Opciones de filtrado
+                                </h4>
+                                <div className="w-9 h-9 rounded-full bg-blue-100
+                                    flex items-center justify-center text-blue-600">
+                                    <SlidersHorizontal className="w-5 h-5" />
+                                </div>
+                            </div>
+
+                            {/* BUSCAR */}
+                            <div className="relative">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2
+                                       text-gray-400 w-5 h-5" />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar servicio..."
+                                    value={busqueda}
+                                    onChange={(e) => setBusqueda(e.target.value)}
+                                    className="
+                            w-full pl-12 pr-4 py-3
+                            rounded-xl
+                            border border-gray-200
+                            outline-none
+                            focus:ring-2 focus:ring-blue-600/40
+                            focus:border-blue-600
+                            transition
+                        "
+                                />
+                            </div>
+
+                            {/* CATEGORÍA */}
+                            <div className="relative">
+                                <Layers className="absolute left-4 top-1/2 -translate-y-1/2
+                                       text-gray-400 w-5 h-5" />
+                                <select
+                                    value={categoria}
+                                    onChange={(e) => setCategoria(e.target.value)}
+                                    className="
+                            w-full pl-12 pr-4 py-3
+                            rounded-xl
+                            border border-gray-200
+                            outline-none
+                            appearance-none
+                            focus:ring-2 focus:ring-blue-600/40
+                            transition
+                        "
+                                >
+                                    {categorias.map(cat => (
+                                        <option key={cat} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* ORDEN */}
+                            <div className="relative">
+                                <ArrowDownAZ className="absolute left-4 top-1/2 -translate-y-1/2
+                                            text-gray-400 w-5 h-5" />
+                                <select
+                                    value={orden}
+                                    onChange={(e) => setOrden(e.target.value)}
+                                    className="
+                            w-full pl-12 pr-4 py-3
+                            rounded-xl
+                            border border-gray-200
+                            outline-none
+                            appearance-none
+                            focus:ring-2 focus:ring-blue-600/40
+                            transition
+                        "
+                                >
+                                    <option value="az">Orden A – Z</option>
+                                    <option value="za">Orden Z – A</option>
+                                </select>
+                            </div>
+
+                            {/* BOTÓN APLICAR */}
+                            <button
+                                onClick={() => setMostrarFiltros(false)}
+                                className="
+                        w-full py-3 rounded-xl
+                        bg-blue-600 text-white
+                        font-bold
+                        flex items-center justify-center gap-2
+                        hover:bg-blue-700
+                        hover:scale-[1.02]
+                        transition
+                    "
+                            >
+                                <Check className="w-5 h-5" />
+                                Aplicar filtros
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </section>
+
 
             {/* ================= CARDS ================= */}
-            <section className="relative py-28 bg-linear-to-br from-slate-50 via-white to-blue-50">
+            <section className="pt-16 pb-24 bg-slate-50">
                 <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-                    {servicios.map((servicio) => (
+                    {serviciosFiltrados.map((servicio) => (
+
                         <div
                             key={servicio.id}
                             onClick={() => {
@@ -400,3 +564,18 @@ export default function Servicios() {
         </>
     );
 }
+<style jsx>{`
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.25s ease-out forwards;
+}
+`}</style>

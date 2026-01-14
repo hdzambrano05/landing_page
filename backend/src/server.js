@@ -59,6 +59,7 @@ Protección del patrimonio, análisis y gestión de riesgos, transferencia de ri
 ================================ */
 const CONTEXTO_SERVICIOS = `
 SERVICIOS:
+SERVICIOS:
 
 1. ADMINISTRACIÓN DE RIESGOS:
 Análisis profesional de riesgos para identificar eventos que puedan afectar el patrimonio del cliente, evaluando su severidad y frecuencia.
@@ -90,6 +91,54 @@ Diseño, implementación y actualización del programa de seguros, asesoría inm
 - Seguridad industrial
 - Riesgo psicosocial
 - Programas especiales
+
+5. SEGUROS DE MOVILIDAD:
+Protección integral para vehículos con coberturas obligatorias y complementarias.
+Incluye:
+- SOAT y asesoría completa
+- Seguros Todo Riesgo
+- Comparativa de mercado
+- Gestión de siniestros
+
+6. SEGUROS DE BIENESTAR Y SALUD:
+Protección personal y familiar con análisis de coberturas.
+Incluye:
+- Medicina prepagada
+- Seguro de vida
+- Seguro educativo
+- Seguros complementarios (enfermedades graves, hospitalización, incapacidad)
+
+7. SEGUROS LABORALES Y DE LEY:
+Cumplimiento normativo y protección para empresas y trabajadores.
+Incluye:
+- ARL
+- Seguros obligatorios
+- Auditoría de cumplimiento
+
+8. SEGUROS DE HOGAR Y ARRENDAMIENTO:
+Protección para bienes inmuebles y contratos de arrendamiento.
+Incluye:
+- Seguro de hogar
+- Seguro de arrendamiento
+- Valuación de bienes
+
+9. SEGUROS EMPRESARIALES Y DE CUMPLIMIENTO:
+Soluciones integrales para empresas.
+Incluye:
+- Pólizas de cumplimiento
+- RC profesional
+- RC general
+- Seguros patrimoniales
+- Análisis de riesgos empresariales
+
+10. SEGUROS ESPECIALIZADOS:
+Soluciones para sectores específicos.
+Incluye:
+- Seguros agrícolas y pecuarios
+- Seguros de crédito
+- Seguros de caución
+- Seguros de transporte
+- Seguros tecnológicos y cibernéticos
 `
 
 /* ================================
@@ -273,6 +322,7 @@ ${message}
         })
     }
 })
+
 /* ================================
    ENDPOINT CONTACTO
 ================================ */
