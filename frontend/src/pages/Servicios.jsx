@@ -190,8 +190,8 @@ export default function Servicios() {
                                 key={i}
                                 onClick={() => cambiarPagina(i + 1)}
                                 className={`px-5 py-2 rounded-xl font-semibold transition ${paginaActual === i + 1
-                                        ? "bg-blue-600 text-white shadow-lg"
-                                        : "bg-white border hover:bg-gray-100"
+                                    ? "bg-blue-600 text-white shadow-lg"
+                                    : "bg-white border hover:bg-gray-100"
                                     }`}
                             >
                                 {i + 1}
@@ -298,7 +298,7 @@ export default function Servicios() {
 
                             {/* ================= FORM ================= */}
                             <div className="relative flex items-center 
-                                bg-gradient-to-br 
+                                bg-linear-to-br 
                                 from-blue-600 via-indigo-600 to-blue-800">
 
                                 <div className="w-full p-6 sm:p-10 lg:p-12 

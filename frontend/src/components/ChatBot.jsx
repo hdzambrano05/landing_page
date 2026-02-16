@@ -92,7 +92,7 @@ export default function ChatBot() {
                         z-50
                         w-12 h-12 sm:w-14 sm:h-14
                         rounded-full
-                        bg-gradient-to-br from-blue-700 to-blue-900
+                        bg-linear-to-br from-blue-700 to-blue-900
                         text-white shadow-2xl
                         flex items-center justify-center
                         hover:scale-105 transition
@@ -110,11 +110,11 @@ export default function ChatBot() {
                         sm:bottom-6 sm:right-6
                         z-50
                         w-[92vw]
-                        max-w-[380px]
+                        max-w-95
                         h-[75vh]
-                        max-h-[560px]
-                        md:w-[420px]
-                        md:h-[600px]
+                        max-h-140
+                        md:w-105
+                        md:h-150
                         bg-white
                         rounded-3xl
                         overflow-hidden
@@ -125,7 +125,7 @@ export default function ChatBot() {
                     {/* HEADER */}
                     <div
                         className="
-                            bg-gradient-to-r from-blue-800 to-blue-900
+                            bg-linear-to-r from-blue-800 to-blue-900
                             px-4 py-4
                             text-white flex justify-between items-center
                         "
@@ -150,7 +150,7 @@ export default function ChatBot() {
                             flex-1 px-4 py-4
                             space-y-4
                             overflow-y-auto
-                            bg-gradient-to-b from-slate-50 to-slate-100
+                            bg-linear-to-b from-slate-50 to-slate-100
                             text-sm
                         "
                     >

@@ -8,7 +8,7 @@ export default function Nosotros() {
                     style={{ backgroundImage: "url('/img/04.webp')" }}
                 ></div>
 
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/90"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-gray-900/90 via-gray-900/70 to-gray-900/90"></div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-6 text-center md:text-left">
                     <span className="inline-block mb-3 px-4 py-1 text-xs tracking-[0.3em] uppercase bg-white/10 backdrop-blur-md rounded-full text-gray-200">
@@ -46,7 +46,7 @@ export default function Nosotros() {
                     </p>
                 </div>
 
-                <div className="relative group rounded-2xl overflow-hidden shadow-lg h-[280px] md:h-[340px]">
+                <div className="relative group rounded-2xl overflow-hidden shadow-lg h-70 md:h-85">
                     <img
                         src="/img/03.jpg"
                         alt="Equipo Conrado Seguros"
@@ -69,7 +69,7 @@ export default function Nosotros() {
                             Compromiso, visión y excelencia
                         </h2>
 
-                        <div className="w-16 h-[2px] bg-blue-600 mx-auto mt-6"></div>
+                        <div className="w-16 h-0.5 bg-blue-600 mx-auto mt-6"></div>
                     </div>
 
                     {/* Grid Institucional */}

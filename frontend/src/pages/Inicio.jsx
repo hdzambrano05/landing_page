@@ -111,7 +111,7 @@ export default function Inicio() {
             {/* ================= SERVICIOS ================= */}
             <section
                 id="servicios-nuevos"
-                className="relative py-28 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden"
+                className="relative py-28 bg-linear-to-b from-white via-slate-50 to-white overflow-hidden"
             >
                 <div className="max-w-7xl mx-auto px-6">
 
@@ -124,7 +124,7 @@ export default function Inicio() {
 
                         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
                             Soluciones diseñadas
-                            <span className="block bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+                            <span className="block bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
                                 para su tranquilidad
                             </span>
                         </h2>
@@ -134,7 +134,7 @@ export default function Inicio() {
                             para proteger su patrimonio y fortalecer su futuro.
                         </p>
 
-                        <div className="mt-8 w-20 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-500 mx-auto rounded-full" />
+                        <div className="mt-8 w-20 h-0.5 bg-linear-to-r from-blue-600 to-cyan-500 mx-auto rounded-full" />
                     </div>
 
                     {/* CARRUSEL */}
@@ -170,8 +170,8 @@ export default function Inicio() {
                         </button>
 
                         {/* Fade lateral elegante */}
-                        <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
-                        <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute left-0 top-0 h-full w-24 bg-linear-to-r from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute right-0 top-0 h-full w-24 bg-linear-to-l from-white to-transparent z-20 pointer-events-none" />
 
                         {/* Contenedor scroll */}
                         <div
@@ -183,7 +183,7 @@ export default function Inicio() {
                             {[...servicios, ...servicios].map((servicio, index) => (
                                 <div
                                     key={index}
-                                    className="min-w-[280px] md:min-w-[340px] cursor-pointer group"
+                                    className="min-w-70 md:min-w-85 cursor-pointer group"
                                     onClick={() =>
                                         navigate("/servicios", {
                                             state: { servicioId: servicio.id },
@@ -191,7 +191,7 @@ export default function Inicio() {
                                     }
                                 >
                                     <div
-                                        className="relative h-[420px] rounded-[2.5rem] overflow-hidden
+                                        className="relative h-105 rounded-[2.5rem] overflow-hidden
                                bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]
                                border border-gray-100
                                transition-all duration-500
@@ -206,7 +206,7 @@ export default function Inicio() {
                                    group-hover:scale-105"
                                         />
 
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
                                         <div className="relative z-10 h-full flex flex-col justify-end p-8 text-white">
                                             <h3 className="text-2xl font-bold mb-3">
@@ -235,7 +235,7 @@ export default function Inicio() {
                             onClick={() => navigate("/servicios")}
                             className="group inline-flex items-center gap-3 px-14 py-4 rounded-full
                    font-semibold text-white text-lg
-                   bg-gradient-to-r from-blue-600 to-cyan-500
+                   bg-linear-to-r from-blue-600 to-cyan-500
                    shadow-[0_20px_40px_rgba(0,0,0,0.15)]
                    hover:shadow-[0_25px_60px_rgba(0,0,0,0.25)]
                    hover:scale-105 transition-all duration-300"
