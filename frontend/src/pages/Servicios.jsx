@@ -10,27 +10,28 @@ import {
     Check
 } from "lucide-react";
 
-
-
 export default function Servicios() {
+
     const location = useLocation();
 
     const [servicioActivo, setServicioActivo] = useState(null);
     const [detalleIndex, setDetalleIndex] = useState(null);
-    const [nombre, setNombre] = useState("")
-    const [email, setEmail] = useState("")
-    const [mensaje, setMensaje] = useState("")
-    const [loadingForm, setLoadingForm] = useState(false)
-    const [estadoForm, setEstadoForm] = useState(null)
+    const [nombre, setNombre] = useState("");
+    const [email, setEmail] = useState("");
+    const [mensaje, setMensaje] = useState("");
+    const [loadingForm, setLoadingForm] = useState(false);
+    const [estadoForm, setEstadoForm] = useState(null);
 
+    const [mostrarFiltros, setMostrarFiltros] = useState(false);
+    const [busqueda, setBusqueda] = useState("");
+    const [categoria, setCategoria] = useState("Todos");
+    const [orden, setOrden] = useState("az");
 
-    const [mostrarFiltros, setMostrarFiltros] = useState(false)
-    const [busqueda, setBusqueda] = useState("")
-    const [categoria, setCategoria] = useState("Todos")
-    const [orden, setOrden] = useState("az")
+    // ================= PAGINACIÓN =================
+    const [paginaActual, setPaginaActual] = useState(1);
+    const serviciosPorPagina = 6;
 
-    const categorias = ["Todos", ...new Set(servicios.map(s => s.categoria))]
-
+    const categorias = ["Todos", ...new Set(servicios.map(s => s.categoria))];
 
     /* =========================
        Abrir modal desde Inicio
@@ -40,11 +41,14 @@ export default function Servicios() {
             const servicio = servicios.find(
                 (s) => s.id === location.state.servicioId
             );
-            if (servicio) {
-                setServicioActivo(servicio);
-            }
+            if (servicio) setServicioActivo(servicio);
         }
     }, [location.state]);
+
+    // Reset página cuando cambian filtros
+    useEffect(() => {
+        setPaginaActual(1);
+    }, [busqueda, categoria, orden]);
 
     const cerrarModal = () => {
         setServicioActivo(null);
@@ -52,37 +56,34 @@ export default function Servicios() {
     };
 
     const enviarFormulario = async (e) => {
-        e.preventDefault()
-        setLoadingForm(true)
-        setEstadoForm(null)
+        e.preventDefault();
+        setLoadingForm(true);
+        setEstadoForm(null);
 
         try {
             const res = await fetch("http://localhost:3001/contacto", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     nombre,
                     email,
                     mensaje,
                     servicio: servicioActivo?.titulo,
                 }),
-            })
+            });
 
-            if (!res.ok) throw new Error("Error al enviar")
+            if (!res.ok) throw new Error("Error al enviar");
 
-            setEstadoForm("success")
-            setNombre("")
-            setEmail("")
-            setMensaje("")
+            setEstadoForm("success");
+            setNombre("");
+            setEmail("");
+            setMensaje("");
         } catch (error) {
-            console.error(error)
-            setEstadoForm("error")
+            setEstadoForm("error");
         } finally {
-            setLoadingForm(false)
+            setLoadingForm(false);
         }
-    }
+    };
 
     const serviciosFiltrados = servicios
         .filter(s =>
@@ -93,55 +94,28 @@ export default function Servicios() {
             orden === "az"
                 ? a.titulo.localeCompare(b.titulo)
                 : b.titulo.localeCompare(a.titulo)
-        )
+        );
 
+    // ================= LÓGICA PAGINACIÓN =================
+    const indexUltimo = paginaActual * serviciosPorPagina;
+    const indexPrimero = indexUltimo - serviciosPorPagina;
+    const serviciosPagina = serviciosFiltrados.slice(indexPrimero, indexUltimo);
+    const totalPaginas = Math.ceil(serviciosFiltrados.length / serviciosPorPagina);
 
-
-
+    const cambiarPagina = (num) => {
+        setPaginaActual(num);
+        window.scrollTo({ top: 700, behavior: "smooth" });
+    };
 
     return (
         <>
             {/* ================= HERO ================= */}
             <section className="relative py-28 md:py-32 overflow-hidden
-                    bg-linear-to-br from-blue-50 via-white to-blue-100">
+                bg-linear-to-br from-blue-50 via-white to-blue-100">
 
-                {/* ===== FONDO ANIMADO ===== */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden">
-
-                    {/* Gradiente animado */}
-                    <div className="absolute inset-0
-                        bg-linear-to-r from-blue-200/30 via-indigo-200/30 to-cyan-200/30
-                        animate-gradientMove" />
-
-                    {/* Glow flotantes */}
-                    <div className="absolute -top-40 -left-40 w-96 h-96
-                        bg-blue-500/30 rounded-full blur-3xl
-                        animate-floatSlow" />
-
-                    <div className="absolute top-1/3 -right-40 w-80 h-80
-                        bg-indigo-500/30 rounded-full blur-3xl
-                        animate-floatReverse" />
-
-                    {/* Figuras geométricas */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-96 h-96 border border-blue-200/40
-                            rounded-3xl rotate-45
-                            animate-rotateSlow" />
-                    </div>
-
-                    <div className="absolute bottom-24 left-24 w-24 h-24
-                        border border-indigo-300/40 rounded-xl
-                        rotate-12 animate-floatSlow" />
-
-                    <div className="absolute top-24 right-32 w-16 h-16
-                        bg-blue-300/20 rounded-full
-                        animate-floatReverse" />
-                </div>
-
-                {/* ===== CONTENIDO (IGUAL) ===== */}
                 <div className="relative max-w-7xl mx-auto px-6 text-center">
                     <span className="inline-block mb-4 px-5 py-1 text-xs tracking-widest uppercase
-                         bg-blue-100 text-blue-700 rounded-full">
+                        bg-blue-100 text-blue-700 rounded-full">
                         Portafolio
                     </span>
 
@@ -158,182 +132,12 @@ export default function Servicios() {
                 </div>
             </section>
 
-            {/* ================= ANIMACIONES ================= */}
-            <style jsx>{`
-@keyframes gradientMove {
-    0% { transform: translateX(0%); }
-    50% { transform: translateX(-10%); }
-    100% { transform: translateX(0%); }
-}
-.animate-gradientMove {
-    animation: gradientMove 12s ease-in-out infinite;
-}
-
-@keyframes floatSlow {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-30px); }
-    100% { transform: translateY(0px); }
-}
-.animate-floatSlow {
-    animation: floatSlow 10s ease-in-out infinite;
-}
-
-@keyframes floatReverse {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(25px); }
-    100% { transform: translateY(0px); }
-}
-.animate-floatReverse {
-    animation: floatReverse 12s ease-in-out infinite;
-}
-
-@keyframes rotateSlow {
-    from { transform: rotate(45deg); }
-    to { transform: rotate(405deg); }
-}
-.animate-rotateSlow {
-    animation: rotateSlow 40s linear infinite;
-}
-`}</style>
-
-            <section className="py-10 bg-slate-50">
-                <div className="max-w-7xl mx-auto px-6 flex justify-end relative">
-
-                    {/* BOTÓN FILTROS */}
-                    <button
-                        onClick={() => setMostrarFiltros(!mostrarFiltros)}
-                        className="
-                group flex items-center gap-3
-                px-7 py-3 rounded-full
-                bg-linear-to-r from-blue-600 to-indigo-600
-                text-white font-semibold
-                shadow-lg shadow-blue-600/30
-                hover:shadow-xl hover:shadow-blue-600/40
-                hover:scale-[1.03]
-                transition-all duration-300
-            "
-                    >
-                        <SlidersHorizontal className="w-5 h-5 group-hover:rotate-90 transition" />
-                        Filtrar y ordenar
-                    </button>
-
-                    {/* PANEL FLOTANTE */}
-                    {mostrarFiltros && (
-                        <div
-                            className="
-                    absolute top-16 right-0 z-50 w-96
-                    bg-white/90 backdrop-blur-xl
-                    rounded-3xl
-                    shadow-[0_30px_80px_rgba(0,0,0,0.18)]
-                    border border-white/60
-                    p-7 space-y-6
-                    animate-fadeIn
-                "
-                        >
-                            {/* HEADER */}
-                            <div className="flex items-center justify-between">
-                                <h4 className="text-lg font-extrabold text-gray-900">
-                                    Opciones de filtrado
-                                </h4>
-                                <div className="w-9 h-9 rounded-full bg-blue-100
-                                    flex items-center justify-center text-blue-600">
-                                    <SlidersHorizontal className="w-5 h-5" />
-                                </div>
-                            </div>
-
-                            {/* BUSCAR */}
-                            <div className="relative">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2
-                                       text-gray-400 w-5 h-5" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar servicio..."
-                                    value={busqueda}
-                                    onChange={(e) => setBusqueda(e.target.value)}
-                                    className="
-                            w-full pl-12 pr-4 py-3
-                            rounded-xl
-                            border border-gray-200
-                            outline-none
-                            focus:ring-2 focus:ring-blue-600/40
-                            focus:border-blue-600
-                            transition
-                        "
-                                />
-                            </div>
-
-                            {/* CATEGORÍA */}
-                            <div className="relative">
-                                <Layers className="absolute left-4 top-1/2 -translate-y-1/2
-                                       text-gray-400 w-5 h-5" />
-                                <select
-                                    value={categoria}
-                                    onChange={(e) => setCategoria(e.target.value)}
-                                    className="
-                            w-full pl-12 pr-4 py-3
-                            rounded-xl
-                            border border-gray-200
-                            outline-none
-                            appearance-none
-                            focus:ring-2 focus:ring-blue-600/40
-                            transition
-                        "
-                                >
-                                    {categorias.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* ORDEN */}
-                            <div className="relative">
-                                <ArrowDownAZ className="absolute left-4 top-1/2 -translate-y-1/2
-                                            text-gray-400 w-5 h-5" />
-                                <select
-                                    value={orden}
-                                    onChange={(e) => setOrden(e.target.value)}
-                                    className="
-                            w-full pl-12 pr-4 py-3
-                            rounded-xl
-                            border border-gray-200
-                            outline-none
-                            appearance-none
-                            focus:ring-2 focus:ring-blue-600/40
-                            transition
-                        "
-                                >
-                                    <option value="az">Orden A – Z</option>
-                                    <option value="za">Orden Z – A</option>
-                                </select>
-                            </div>
-
-                            {/* BOTÓN APLICAR */}
-                            <button
-                                onClick={() => setMostrarFiltros(false)}
-                                className="
-                        w-full py-3 rounded-xl
-                        bg-blue-600 text-white
-                        font-bold
-                        flex items-center justify-center gap-2
-                        hover:bg-blue-700
-                        hover:scale-[1.02]
-                        transition
-                    "
-                            >
-                                <Check className="w-5 h-5" />
-                                Aplicar filtros
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </section>
-
-
             {/* ================= CARDS ================= */}
             <section className="pt-16 pb-24 bg-slate-50">
-                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-                    {serviciosFiltrados.map((servicio) => (
+                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-3 gap-12">
 
+
+                    {serviciosPagina.map((servicio) => (
                         <div
                             key={servicio.id}
                             onClick={() => {
@@ -341,36 +145,24 @@ export default function Servicios() {
                                 setDetalleIndex(null);
                             }}
                             className="group relative cursor-pointer
-                           rounded-[2.2rem] overflow-hidden
-                           bg-white/80 backdrop-blur-xl
-                           border border-white/60
-                           shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-                           hover:shadow-[0_35px_90px_rgba(0,0,0,0.18)]
-                           hover:-translate-y-3
-                           transition-all duration-500"
+                            rounded-[2.2rem] overflow-hidden
+                            bg-white/80 backdrop-blur-xl
+                            border border-white/60
+                            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+                            hover:shadow-[0_35px_90px_rgba(0,0,0,0.18)]
+                            hover:-translate-y-3
+                            transition-all duration-500"
                         >
-                            {/* Glow hover */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition">
-                                <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl" />
-                                <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl" />
-                            </div>
-
-                            {/* Imagen */}
                             <div className="relative h-52 overflow-hidden">
                                 <img
                                     src={servicio.imagen}
                                     alt={servicio.titulo}
                                     className="w-full h-full object-cover
-                                   transition-transform duration-700
-                                   group-hover:scale-110"
+                                    transition-transform duration-700
+                                    group-hover:scale-110"
                                 />
-
-                                {/* Overlay gradient */}
-                                <div className="absolute inset-0 bg-linear-to-t
-                                    from-black/40 via-black/10 to-transparent" />
                             </div>
 
-                            {/* Contenido */}
                             <div className="relative p-8 space-y-4">
                                 <h3 className="text-2xl font-extrabold text-gray-900 leading-tight">
                                     {servicio.titulo}
@@ -380,70 +172,80 @@ export default function Servicios() {
                                     {servicio.descripcion}
                                 </p>
 
-                                {/* CTA */}
                                 <div className="flex items-center justify-between pt-4">
-                                    <span className="inline-flex items-center gap-2
-                                         text-blue-600 font-semibold
-                                         transition-all group-hover:gap-3">
+                                    <span className="text-blue-600 font-semibold">
                                         Explorar servicio →
                                     </span>
-
-                                    {/* Icono flotante */}
-                                    <div className="w-10 h-10 rounded-full
-                                        bg-blue-600/10 text-blue-600
-                                        flex items-center justify-center
-                                        group-hover:bg-blue-600
-                                        group-hover:text-white
-                                        transition">
-                                        →
-                                    </div>
                                 </div>
                             </div>
-
-                            {/* Borde animado */}
-                            <div className="absolute inset-0 rounded-[2.2rem]
-                                ring-1 ring-transparent
-                                group-hover:ring-blue-500/30 transition" />
                         </div>
                     ))}
                 </div>
+
+                {/* ================= PAGINADOR ================= */}
+                {totalPaginas > 1 && (
+                    <div className="flex justify-center mt-16 gap-3 flex-wrap">
+                        {[...Array(totalPaginas)].map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => cambiarPagina(i + 1)}
+                                className={`px-5 py-2 rounded-xl font-semibold transition ${paginaActual === i + 1
+                                        ? "bg-blue-600 text-white shadow-lg"
+                                        : "bg-white border hover:bg-gray-100"
+                                    }`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </section>
 
-
-            {/* ================= MODAL ================= */}
+            {/* ================= MODAL RESPONSIVE ================= */}
             {servicioActivo && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-md">
-                    <div className="relative w-full max-w-7xl h-[90vh] bg-white rounded-[2.5rem]
-                                    shadow-[0_40px_120px_rgba(0,0,0,0.3)] overflow-hidden">
+                <div className="fixed inset-0 z-50 flex items-center justify-center 
+                    px-4 sm:px-6 py-6 bg-black/70 backdrop-blur-md">
 
-                        {/* Cerrar */}
+                    <div className="relative w-full max-w-7xl 
+                        h-auto lg:h-[90vh] 
+                        bg-white rounded-3xl 
+                        shadow-[0_40px_120px_rgba(0,0,0,0.3)] 
+                        overflow-hidden">
+
+                        {/* BOTÓN CERRAR */}
                         <button
                             onClick={cerrarModal}
-                            className="absolute top-6 right-6 z-50 w-12 h-12
-                                       rounded-full bg-white/80 backdrop-blur
-                                       flex items-center justify-center
-                                       text-2xl text-gray-500 hover:text-black
-                                       hover:scale-110 transition"
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 
+                           w-10 h-10 sm:w-12 sm:h-12
+                           rounded-full bg-white/80 backdrop-blur
+                           flex items-center justify-center
+                           text-xl sm:text-2xl text-gray-500 
+                           hover:text-black hover:scale-110 transition"
                         >
                             ×
                         </button>
 
-                        <div className="grid lg:grid-cols-2 h-full">
+                        <div className="flex flex-col lg:grid lg:grid-cols-2 h-full">
 
-                            {/* ================= INFO (SCROLL REAL) ================= */}
-                            <div className="p-12 flex flex-col h-full overflow-hidden">
-                                <div className="flex-1 overflow-y-auto pr-4 scroll-custom space-y-8">
+                            {/* ================= INFO ================= */}
+                            <div className="p-6 sm:p-10 lg:p-12 
+                                flex flex-col 
+                                max-h-[50vh] lg:max-h-none 
+                                overflow-hidden">
 
-                                    <span className="inline-block px-4 py-1 text-sm font-semibold
-                                                     rounded-full bg-blue-100 text-blue-700">
+                                <div className="flex-1 overflow-y-auto pr-2 sm:pr-4 scroll-custom space-y-6 sm:space-y-8">
+
+                                    <span className="inline-block px-4 py-1 text-xs sm:text-sm font-semibold
+                                         rounded-full bg-blue-100 text-blue-700">
                                         Servicio especializado
                                     </span>
 
-                                    <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
+                                    <h2 className="text-3xl sm:text-4xl lg:text-5xl 
+                                       font-extrabold text-gray-900 leading-tight">
                                         {servicioActivo.titulo}
                                     </h2>
 
-                                    <p className="text-lg text-gray-600 max-w-xl">
+                                    <p className="text-base sm:text-lg text-gray-600">
                                         {servicioActivo.descripcion}
                                     </p>
 
@@ -460,15 +262,16 @@ export default function Servicios() {
                                                         )
                                                     }
                                                     className="w-full flex justify-between items-center
-                                                               p-6 bg-white hover:bg-blue-50 transition"
+                                                   p-4 sm:p-6 bg-white hover:bg-blue-50 transition"
                                                 >
-                                                    <span className="font-semibold text-gray-900">
+                                                    <span className="font-semibold text-sm sm:text-base text-gray-900 text-left">
                                                         {item.titulo}
                                                     </span>
 
-                                                    <span className={`w-8 h-8 flex items-center justify-center
-                                                                      rounded-full font-bold transition
-                                                                      ${detalleIndex === index
+                                                    <span className={`w-7 h-7 sm:w-8 sm:h-8 
+                                                          flex items-center justify-center
+                                                          rounded-full font-bold transition
+                                                          ${detalleIndex === index
                                                             ? "bg-blue-600 text-white rotate-180"
                                                             : "bg-gray-100 text-gray-600"
                                                         }`}>
@@ -477,8 +280,8 @@ export default function Servicios() {
                                                 </button>
 
                                                 {detalleIndex === index && (
-                                                    <div className="p-6 bg-gray-50 border-t">
-                                                        <p className="text-gray-600">
+                                                    <div className="p-4 sm:p-6 bg-gray-50 border-t">
+                                                        <p className="text-sm sm:text-base text-gray-600">
                                                             {item.descripcion}
                                                         </p>
                                                     </div>
@@ -488,27 +291,33 @@ export default function Servicios() {
                                     </div>
                                 </div>
 
-                                <div className="pt-6 mt-6 border-t text-sm text-gray-400 shrink-0">
+                                <div className="pt-4 mt-4 border-t text-xs sm:text-sm text-gray-400 shrink-0">
                                     Atención personalizada · Respuesta rápida
                                 </div>
                             </div>
 
                             {/* ================= FORM ================= */}
-                            <div className="relative flex items-center bg-linear-to-br from-blue-600 via-indigo-600 to-blue-800">
-                                <div className="w-full p-12 bg-white/10 backdrop-blur-xl">
-                                    <h3 className="text-3xl font-bold text-white mb-8">
+                            <div className="relative flex items-center 
+                                bg-gradient-to-br 
+                                from-blue-600 via-indigo-600 to-blue-800">
+
+                                <div className="w-full p-6 sm:p-10 lg:p-12 
+                                    bg-white/10 backdrop-blur-xl">
+
+                                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8">
                                         Solicitar información
                                     </h3>
 
-                                    <form onSubmit={enviarFormulario} className="space-y-6">
+                                    <form onSubmit={enviarFormulario} className="space-y-5 sm:space-y-6">
+
                                         <input
                                             type="text"
                                             placeholder="Nombre completo"
                                             value={nombre}
                                             onChange={(e) => setNombre(e.target.value)}
                                             required
-                                            className="w-full p-4 rounded-xl bg-white/90 outline-none
-                   focus:ring-2 focus:ring-white"
+                                            className="w-full p-3 sm:p-4 rounded-xl bg-white/90 outline-none
+                                           focus:ring-2 focus:ring-white text-sm sm:text-base"
                                         />
 
                                         <input
@@ -517,8 +326,8 @@ export default function Servicios() {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
-                                            className="w-full p-4 rounded-xl bg-white/90 outline-none
-                   focus:ring-2 focus:ring-white"
+                                            className="w-full p-3 sm:p-4 rounded-xl bg-white/90 outline-none
+                                           focus:ring-2 focus:ring-white text-sm sm:text-base"
                                         />
 
                                         <textarea
@@ -527,23 +336,25 @@ export default function Servicios() {
                                             value={mensaje}
                                             onChange={(e) => setMensaje(e.target.value)}
                                             required
-                                            className="w-full p-4 rounded-xl bg-white/90 resize-none outline-none
-                   focus:ring-2 focus:ring-white"
+                                            className="w-full p-3 sm:p-4 rounded-xl bg-white/90 
+                                           resize-none outline-none
+                                           focus:ring-2 focus:ring-white text-sm sm:text-base"
                                         />
 
                                         <button
                                             type="submit"
                                             disabled={loadingForm}
-                                            className="w-full py-4 rounded-xl bg-white text-blue-700
-                   font-bold text-lg
-                   hover:scale-[1.03]
-                   disabled:opacity-60 disabled:cursor-not-allowed
-                   transition"
+                                            className="w-full py-3 sm:py-4 rounded-xl 
+                                           bg-white text-blue-700
+                                           font-bold text-base sm:text-lg
+                                           hover:scale-[1.03]
+                                           disabled:opacity-60 
+                                           disabled:cursor-not-allowed
+                                           transition"
                                         >
                                             {loadingForm ? "Enviando..." : "Enviar solicitud"}
                                         </button>
 
-                                        {/* ===== MODAL DE FEEDBACK ===== */}
                                         {estadoForm && (
                                             <FeedbackModal
                                                 tipo={estadoForm}
@@ -552,7 +363,7 @@ export default function Servicios() {
                                         )}
                                     </form>
 
-                                    <p className="mt-6 text-sm text-white/70">
+                                    <p className="mt-6 text-xs sm:text-sm text-white/70">
                                         Nos comunicaremos contigo lo antes posible.
                                     </p>
                                 </div>
@@ -564,6 +375,7 @@ export default function Servicios() {
         </>
     );
 }
+
 <style jsx>{`
 @keyframes fadeIn {
     from {

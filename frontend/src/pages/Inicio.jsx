@@ -38,6 +38,25 @@ export default function Inicio() {
         return () => cancelAnimationFrame(animationId);
     }, [paused]);
 
+    /* ================= SCROLL MANUAL CON FLECHAS ================= */
+    const scrollManual = (direction) => {
+        const container = carruselRef.current;
+        if (!container) return;
+
+        setPaused(true);
+
+        const scrollAmount = 400;
+
+        container.scrollBy({
+            left: direction === "left" ? -scrollAmount : scrollAmount,
+            behavior: "smooth",
+        });
+
+        // Reanuda auto scroll después de 2 segundos
+        setTimeout(() => setPaused(false), 2000);
+    };
+
+
     return (
         <>
             {/* ================= HERO ================= */}
@@ -92,96 +111,143 @@ export default function Inicio() {
             {/* ================= SERVICIOS ================= */}
             <section
                 id="servicios-nuevos"
-                className="py-20 bg-linear-to-b from-white to-gray-100 overflow-hidden"
+                className="relative py-28 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden"
             >
-                <div className="max-w-7xl mx-auto px-4">
-                    {/* Header */}
-                    <div className="text-center mb-14">
-                        <span className="inline-block mb-3 px-4 py-1 text-xs uppercase
-                                         bg-blue-100 text-blue-700 rounded-full">
+                <div className="max-w-7xl mx-auto px-6">
+
+                    {/* HEADER */}
+                    <div className="text-center mb-20">
+                        <span className="inline-block mb-4 px-5 py-1.5 text-xs tracking-[0.25em] uppercase
+                       bg-blue-50 text-blue-700 rounded-full border border-blue-100">
                             Portafolio
                         </span>
 
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                            Nuestros servicios
+                        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+                            Soluciones diseñadas
+                            <span className="block bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+                                para su tranquilidad
+                            </span>
                         </h2>
 
-                        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-                            Soluciones modernas, flexibles y diseñadas para
-                            proteger lo que más importa.
+                        <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                            Servicios especializados con respaldo técnico y enfoque estratégico
+                            para proteger su patrimonio y fortalecer su futuro.
                         </p>
 
-                        <div className="mt-6 w-24 h-1 bg-linear-to-r from-blue-600 to-cyan-500 mx-auto rounded-full" />
+                        <div className="mt-8 w-20 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-500 mx-auto rounded-full" />
                     </div>
 
-                    {/* Carrusel */}
-                    <div className="relative">
+                    {/* CARRUSEL */}
+                    {/* CARRUSEL */}
+                    <div className="relative group">
 
+                        {/* Flecha izquierda */}
+                        <button
+                            onClick={() => scrollManual("left")}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30
+                   w-12 h-12 rounded-full
+                   bg-white/90 backdrop-blur-md
+                   shadow-lg border border-gray-200
+                   flex items-center justify-center
+                   opacity-0 group-hover:opacity-100
+                   transition duration-300 hover:scale-110"
+                        >
+                            <ArrowLeft className="w-5 h-5 text-gray-700" />
+                        </button>
+
+                        {/* Flecha derecha */}
+                        <button
+                            onClick={() => scrollManual("right")}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30
+                   w-12 h-12 rounded-full
+                   bg-white/90 backdrop-blur-md
+                   shadow-lg border border-gray-200
+                   flex items-center justify-center
+                   opacity-0 group-hover:opacity-100
+                   transition duration-300 hover:scale-110"
+                        >
+                            <ArrowRight className="w-5 h-5 text-gray-700" />
+                        </button>
+
+                        {/* Fade lateral elegante */}
+                        <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
+
+                        {/* Contenedor scroll */}
                         <div
                             ref={carruselRef}
                             onMouseEnter={() => setPaused(true)}
                             onMouseLeave={() => setPaused(false)}
-                            className="flex gap-8 overflow-x-hidden px-2"
+                            className="flex gap-10 overflow-x-hidden px-6"
                         >
-                            {[...servicios, ...servicios].map(
-                                (servicio, index) => (
+                            {[...servicios, ...servicios].map((servicio, index) => (
+                                <div
+                                    key={index}
+                                    className="min-w-[280px] md:min-w-[340px] cursor-pointer group"
+                                    onClick={() =>
+                                        navigate("/servicios", {
+                                            state: { servicioId: servicio.id },
+                                        })
+                                    }
+                                >
                                     <div
-                                        key={index}
-                                        className="min-w-70 md:min-w-90 cursor-pointer"
-                                        onClick={() =>
-                                            navigate("/servicios", {
-                                                state: {
-                                                    servicioId: servicio.id,
-                                                },
-                                            })
-                                        }
+                                        className="relative h-[420px] rounded-[2.5rem] overflow-hidden
+                               bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+                               border border-gray-100
+                               transition-all duration-500
+                               group-hover:-translate-y-3
+                               group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.15)]"
                                     >
-                                        <div
-                                            className="relative h-105 rounded-3xl overflow-hidden
-                                                       bg-white/40 backdrop-blur-xl
-                                                       border border-white/40
-                                                       shadow-xl hover:shadow-2xl
-                                                       transition hover:-translate-y-4"
-                                        >
-                                            <img
-                                                src={servicio.imagen}
-                                                alt={servicio.titulo}
-                                                className="absolute inset-0 w-full h-full object-cover"
-                                            />
+                                        <img
+                                            src={servicio.imagen}
+                                            alt={servicio.titulo}
+                                            className="absolute inset-0 w-full h-full object-cover
+                                   transition-transform duration-700
+                                   group-hover:scale-105"
+                                        />
 
-                                            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                                            <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
-                                                <h3 className="text-xl font-bold mb-2">
-                                                    {servicio.titulo}
-                                                </h3>
-                                                <p className="text-sm text-gray-200 leading-relaxed">
-                                                    {servicio.descripcion}
-                                                </p>
-                                                <div className="mt-4 h-1 w-12 bg-cyan-400 rounded-full" />
+                                        <div className="relative z-10 h-full flex flex-col justify-end p-8 text-white">
+                                            <h3 className="text-2xl font-bold mb-3">
+                                                {servicio.titulo}
+                                            </h3>
+
+                                            <p className="text-sm text-gray-200 leading-relaxed line-clamp-3">
+                                                {servicio.descripcion}
+                                            </p>
+
+                                            <div className="mt-6 flex items-center gap-2 text-cyan-400 font-medium text-sm opacity-0
+                                        group-hover:opacity-100 transition duration-300">
+                                                Explorar servicio →
                                             </div>
                                         </div>
                                     </div>
-                                )
-                            )}
+                                </div>
+                            ))}
                         </div>
                     </div>
 
+
                     {/* CTA */}
-                    <div className="mt-16 flex justify-center">
+                    <div className="mt-24 flex justify-center">
                         <button
                             onClick={() => navigate("/servicios")}
-                            className="inline-flex items-center gap-3 px-12 py-4 rounded-full
-                                       font-semibold text-white
-                                       bg-linear-to-r from-blue-600 to-cyan-500
-                                       shadow-xl hover:scale-105 transition"
+                            className="group inline-flex items-center gap-3 px-14 py-4 rounded-full
+                   font-semibold text-white text-lg
+                   bg-gradient-to-r from-blue-600 to-cyan-500
+                   shadow-[0_20px_40px_rgba(0,0,0,0.15)]
+                   hover:shadow-[0_25px_60px_rgba(0,0,0,0.25)]
+                   hover:scale-105 transition-all duration-300"
                         >
                             Ver portafolio completo
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                         </button>
                     </div>
+
                 </div>
             </section>
+
 
             {/* ================= CONTACTO ================= */}
             <section

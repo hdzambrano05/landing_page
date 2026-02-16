@@ -120,7 +120,7 @@ export const servicios = [
         categoria: "Movilidad",
         titulo: "Seguros de Movilidad",
         descripcion: "Protección integral para vehículos con coberturas obligatorias y complementarias.",
-        imagen: "/img/09.jpg",
+        imagen: "/img/13.jpg",
         detalles: [
             {
                 titulo: "SOAT - Seguro Obligatorio",
@@ -145,7 +145,7 @@ export const servicios = [
         categoria: "Personales",
         titulo: "Seguros de Bienestar y Salud",
         descripcion: "Protección para la salud personal y familiar con coberturas integrales y complementarias.",
-        imagen: "/img/10.jpg",
+        imagen: "/img/10.webp",
         detalles: [
             {
                 titulo: "Seguro de Salud / Medicina Prepagada",
@@ -212,7 +212,7 @@ export const servicios = [
         categoria: "Empresarial",
         titulo: "Seguros Empresariales y de Cumplimiento",
         descripcion: "Protección integral para empresas, contratos y responsabilidades profesionales.",
-        imagen: "/img/13.jpg",
+        imagen: "/img/14.jpg",
         detalles: [
             {
                 titulo: "Pólizas de Cumplimiento",
@@ -241,7 +241,7 @@ export const servicios = [
         categoria: "Especializados",
         titulo: "Seguros Especializados",
         descripcion: "Soluciones de seguro adaptadas a necesidades específicas y sectores especializados.",
-        imagen: "/img/14.jpg",
+        imagen: "/img/15.png",
         detalles: [
             {
                 titulo: "Seguros Agrícolas y Pecuarios",

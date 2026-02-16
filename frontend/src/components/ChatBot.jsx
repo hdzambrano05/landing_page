@@ -24,14 +24,26 @@ export default function ChatBot() {
 
     const messagesEndRef = useRef(null)
 
+    /* =======================
+       AUTO SCROLL
+    ======================= */
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages, loading])
 
+    /* =======================
+       ENVIAR MENSAJE
+    ======================= */
     const sendMessage = async () => {
-        if (!input.trim()) return
+        if (!input.trim() || loading) return
 
-        setMessages((prev) => [...prev, { role: "user", content: input }])
+        const userMessage = input
+
+        setMessages((prev) => [
+            ...prev,
+            { role: "user", content: userMessage },
+        ])
+
         setInput("")
         setLoading(true)
 
@@ -39,14 +51,21 @@ export default function ChatBot() {
             const res = await fetch("http://localhost:3001/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: input }),
+                body: JSON.stringify({ message: userMessage }),
             })
+
+            if (!res.ok) throw new Error("Error servidor")
 
             const data = await res.json()
 
             setMessages((prev) => [
                 ...prev,
-                { role: "assistant", content: data.reply },
+                {
+                    role: "assistant",
+                    content:
+                        data.reply ||
+                        "No se recibió respuesta válida del servidor.",
+                },
             ])
         } catch {
             setMessages((prev) => [
@@ -54,7 +73,7 @@ export default function ChatBot() {
                 {
                     role: "assistant",
                     content:
-                        "Ocurrió un inconveniente al procesar su solicitud. Por favor, intente nuevamente.",
+                        "Ocurrió un inconveniente al procesar su solicitud. Por favor, intente nuevamente más tarde.",
                 },
             ])
         } finally {
@@ -64,33 +83,53 @@ export default function ChatBot() {
 
     return (
         <>
-            {/* BOTÓN FLOTANTE */}
+            {/* ================= BOTÓN FLOTANTE ================= */}
             {!open && (
                 <button
                     onClick={() => setOpen(true)}
-                    className="fixed bottom-6 right-6 z-50
-                    w-14 h-14 rounded-full
-                    bg-gradient-to-br from-blue-700 to-blue-900
-                    text-white shadow-2xl
-                    flex items-center justify-center
-                    hover:scale-105 transition"
+                    className="
+                        fixed bottom-4 right-4 sm:bottom-6 sm:right-6
+                        z-50
+                        w-12 h-12 sm:w-14 sm:h-14
+                        rounded-full
+                        bg-gradient-to-br from-blue-700 to-blue-900
+                        text-white shadow-2xl
+                        flex items-center justify-center
+                        hover:scale-105 transition
+                    "
                 >
-                    <MessageCircle className="w-7 h-7" />
+                    <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
                 </button>
             )}
 
-            {/* CHAT */}
+            {/* ================= CHAT BOX ================= */}
             {open && (
                 <div
-                    className="fixed bottom-6 right-6 z-50
-                    w-[380px] h-[560px]
-                    rounded-3xl overflow-hidden
-                    shadow-[0_25px_60px_-15px_rgba(0,0,0,0.25)]
-                    bg-white flex flex-col"
+                    className="
+                        fixed bottom-4 right-4
+                        sm:bottom-6 sm:right-6
+                        z-50
+                        w-[92vw]
+                        max-w-[380px]
+                        h-[75vh]
+                        max-h-[560px]
+                        md:w-[420px]
+                        md:h-[600px]
+                        bg-white
+                        rounded-3xl
+                        overflow-hidden
+                        shadow-[0_25px_60px_-15px_rgba(0,0,0,0.25)]
+                        flex flex-col
+                    "
                 >
                     {/* HEADER */}
-                    <div className="bg-gradient-to-r from-blue-800 to-blue-900
-                        px-5 py-4 text-white flex justify-between items-center">
+                    <div
+                        className="
+                            bg-gradient-to-r from-blue-800 to-blue-900
+                            px-4 py-4
+                            text-white flex justify-between items-center
+                        "
+                    >
                         <div>
                             <p className="font-semibold text-sm">
                                 Asistente Conrado Seguros
@@ -99,15 +138,22 @@ export default function ChatBot() {
                                 En línea · Atención institucional
                             </p>
                         </div>
+
                         <button onClick={() => setOpen(false)}>
                             <X className="w-5 h-5 opacity-80 hover:opacity-100" />
                         </button>
                     </div>
 
                     {/* MENSAJES */}
-                    <div className="flex-1 px-4 py-4 space-y-4 overflow-y-auto
-                        bg-gradient-to-b from-slate-50 to-slate-100 text-sm">
-
+                    <div
+                        className="
+                            flex-1 px-4 py-4
+                            space-y-4
+                            overflow-y-auto
+                            bg-gradient-to-b from-slate-50 to-slate-100
+                            text-sm
+                        "
+                    >
                         {messages.map((msg, i) => (
                             <div
                                 key={i}
@@ -118,7 +164,7 @@ export default function ChatBot() {
                             >
                                 <div
                                     className={`
-                                        inline-block max-w-[80%]
+                                        inline-block max-w-[85%]
                                         px-4 py-2.5
                                         rounded-2xl
                                         leading-relaxed
@@ -151,9 +197,13 @@ export default function ChatBot() {
 
                     {/* INPUT */}
                     <div className="border-t bg-white px-4 py-3">
-                        <div className="flex items-center gap-2
-                            bg-gray-100 rounded-2xl px-3 py-2
-                            focus-within:ring-2 focus-within:ring-blue-800">
+                        <div
+                            className="
+                                flex items-center gap-2
+                                bg-gray-100 rounded-2xl px-3 py-2
+                                focus-within:ring-2 focus-within:ring-blue-800
+                            "
+                        >
                             <input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
@@ -161,15 +211,23 @@ export default function ChatBot() {
                                     e.key === "Enter" && sendMessage()
                                 }
                                 placeholder="Escriba su consulta…"
-                                className="flex-1 bg-transparent
-                                outline-none text-sm
-                                text-gray-800 placeholder-gray-500"
+                                disabled={loading}
+                                className="
+                                    flex-1 bg-transparent
+                                    outline-none text-sm
+                                    text-gray-800 placeholder-gray-500
+                                "
                             />
+
                             <button
                                 onClick={sendMessage}
-                                className="bg-blue-800 text-white
-                                p-2 rounded-xl
-                                hover:bg-blue-900 transition"
+                                disabled={loading}
+                                className="
+                                    bg-blue-800 text-white
+                                    p-2 rounded-xl
+                                    hover:bg-blue-900 transition
+                                    disabled:opacity-50
+                                "
                             >
                                 <Send className="w-4 h-4" />
                             </button>
