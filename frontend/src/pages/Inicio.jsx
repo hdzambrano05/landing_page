@@ -68,7 +68,7 @@ export default function Inicio() {
 
                 <div className="relative z-10 max-w-4xl text-center">
                     <span className="inline-block mb-5 px-6 py-2 text-xs tracking-widest uppercase
-                                     bg-white/10 backdrop-blur-md rounded-full text-gray-200">
+                                    bg-white/10 backdrop-blur-md rounded-full text-gray-200">
                         Conrado Seguros
                     </span>
 
@@ -86,8 +86,8 @@ export default function Inicio() {
                         <a
                             href="#contacto"
                             className="px-10 py-4 rounded-full font-semibold text-white
-                                       bg-linear-to-r from-blue-600 to-cyan-500
-                                       shadow-xl hover:scale-105 transition"
+                                        bg-linear-to-r from-blue-600 to-cyan-500
+                                        shadow-xl hover:scale-105 transition"
                         >
                             Solicitar asesoría
                         </a>
@@ -95,8 +95,8 @@ export default function Inicio() {
                         <a
                             href="#servicios-nuevos"
                             className="px-10 py-4 rounded-full font-semibold text-white
-                                       border border-white/30 backdrop-blur
-                                       hover:bg-white/10 transition"
+                                        border border-white/30 backdrop-blur
+                                        hover:bg-white/10 transition"
                         >
                             Ver servicios
                         </a>
@@ -118,7 +118,7 @@ export default function Inicio() {
                     {/* HEADER */}
                     <div className="text-center mb-20">
                         <span className="inline-block mb-4 px-5 py-1.5 text-xs tracking-[0.25em] uppercase
-                       bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+                        bg-blue-50 text-blue-700 rounded-full border border-blue-100">
                             Portafolio
                         </span>
 
@@ -145,14 +145,14 @@ export default function Inicio() {
                         <button
                             onClick={() => scrollManual("left")}
                             className="
-        absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30
-        w-9 h-9 md:w-12 md:h-12 rounded-full
-        bg-white/95 backdrop-blur-md
-        shadow-lg border border-gray-200
-        flex items-center justify-center
-        opacity-100 md:opacity-0 md:group-hover:opacity-100
-        transition duration-300 hover:scale-110 active:scale-95
-        "
+                                        absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30
+                                        w-9 h-9 md:w-12 md:h-12 rounded-full
+                                        bg-white/95 backdrop-blur-md
+                                        shadow-lg border border-gray-200
+                                        flex items-center justify-center
+                                        opacity-100 md:opacity-0 md:group-hover:opacity-100
+                                        transition duration-300 hover:scale-110 active:scale-95
+                                        "
                         >
                             <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
                         </button>
@@ -161,21 +161,21 @@ export default function Inicio() {
                         <button
                             onClick={() => scrollManual("right")}
                             className="
-        absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30
-        w-9 h-9 md:w-12 md:h-12 rounded-full
-        bg-white/95 backdrop-blur-md
-        shadow-lg border border-gray-200
-        flex items-center justify-center
-        opacity-100 md:opacity-0 md:group-hover:opacity-100
-        transition duration-300 hover:scale-110 active:scale-95
-        "
+                                        absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30
+                                        w-9 h-9 md:w-12 md:h-12 rounded-full
+                                        bg-white/95 backdrop-blur-md
+                                        shadow-lg border border-gray-200
+                                        flex items-center justify-center
+                                        opacity-100 md:opacity-0 md:group-hover:opacity-100
+                                        transition duration-300 hover:scale-110 active:scale-95
+                                        "
                         >
                             <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
                         </button>
 
                         {/* Fade lateral (más pequeño en móvil) */}
-                        <div className="absolute left-0 top-0 h-full w-10 md:w-24 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
-                        <div className="absolute right-0 top-0 h-full w-10 md:w-24 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute left-0 top-0 h-full w-10 md:w-24 bg-linear-to-r from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute right-0 top-0 h-full w-10 md:w-24 bg-linear-to-l from-white to-transparent z-20 pointer-events-none" />
 
                         {/* Contenedor scroll */}
                         <div
@@ -183,17 +183,17 @@ export default function Inicio() {
                             onMouseEnter={() => setPaused(true)}
                             onMouseLeave={() => setPaused(false)}
                             className="
-        flex gap-6 md:gap-10
-        overflow-x-auto md:overflow-x-hidden
-        scroll-smooth
-        px-4 md:px-6
-        scrollbar-hide
-        "
+                                        flex gap-6 md:gap-10
+                                        overflow-x-auto md:overflow-x-hidden
+                                        scroll-smooth
+                                        px-4 md:px-6
+                                        scrollbar-hide
+                                        "
                         >
                             {servicios.slice(0, 4).map((servicio, index) => (
                                 <div
                                     key={servicio.id}
-                                    className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px] cursor-pointer group"
+                                    className="min-w-65 sm:min-w-75 md:min-w-85 cursor-pointer group"
                                     onClick={() =>
                                         navigate("/servicios", {
                                             state: { servicioId: servicio.id },
@@ -202,28 +202,28 @@ export default function Inicio() {
                                 >
                                     <div
                                         className="
-                relative h-[420px] sm:h-[460px] md:h-[520px]
-                rounded-3xl md:rounded-[2.5rem]
-                overflow-hidden
-                bg-white
-                shadow-[0_15px_40px_rgba(0,0,0,0.08)]
-                border border-gray-100
-                transition-all duration-500
-                md:group-hover:-translate-y-3
-                md:group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.15)]
-            "
+                                                    relative h-105 sm:h-115 md:h-130
+                                                    rounded-3xl md:rounded-[2.5rem]
+                                                    overflow-hidden
+                                                    bg-white
+                                                    shadow-[0_15px_40px_rgba(0,0,0,0.08)]
+                                                    border border-gray-100
+                                                    transition-all duration-500
+                                                    md:group-hover:-translate-y-3
+                                                    md:group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.15)]
+                                                "
                                     >
                                         <img
                                             src={servicio.imagen}
                                             alt={servicio.titulo}
                                             className="
-                    absolute inset-0 w-full h-full object-cover
-                    transition-transform duration-700
-                    md:group-hover:scale-105
-                "
+                                                        absolute inset-0 w-full h-full object-cover
+                                                        transition-transform duration-700
+                                                        md:group-hover:scale-105
+                                                        "
                                         />
 
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
                                         <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
                                             <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">
@@ -251,7 +251,7 @@ export default function Inicio() {
 
                             {/* CARD MÁS SERVICIOS */}
                             <div
-                                className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px] cursor-pointer group"
+                                className="min-w-65 sm:min-w-75 md:min-w-85 cursor-pointer group"
                                 onClick={() =>
                                     navigate("/servicios", {
                                         state: { soloNuevos: true },
@@ -260,7 +260,7 @@ export default function Inicio() {
                             >
                                 <div
                                     className="
-                                                relative h-[420px] sm:h-[460px] md:h-[520px]
+                                                relative h-105 sm:h-115 md:h-130
                                                 rounded-3xl md:rounded-[2.5rem]
                                                 overflow-hidden
                                                 shadow-[0_15px_40px_rgba(0,0,0,0.12)]
@@ -282,7 +282,7 @@ export default function Inicio() {
                                     />
 
                                     {/* Overlay oscuro elegante */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/20" />
 
                                     {/* Contenido */}
                                     <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
@@ -321,18 +321,16 @@ export default function Inicio() {
                         </div>
                     </div>
 
-
-
                     {/* CTA */}
                     <div className="mt-24 flex justify-center">
                         <button
                             onClick={() => navigate("/servicios")}
                             className="group inline-flex items-center gap-3 px-14 py-4 rounded-full
-                   font-semibold text-white text-lg
-                   bg-linear-to-r from-blue-600 to-cyan-500
-                   shadow-[0_20px_40px_rgba(0,0,0,0.15)]
-                   hover:shadow-[0_25px_60px_rgba(0,0,0,0.25)]
-                   hover:scale-105 transition-all duration-300"
+                                        font-semibold text-white text-lg
+                                        bg-linear-to-r from-blue-600 to-cyan-500
+                                        shadow-[0_20px_40px_rgba(0,0,0,0.15)]
+                                        hover:shadow-[0_25px_60px_rgba(0,0,0,0.25)]
+                                        hover:scale-105 transition-all duration-300"
                         >
                             Ver portafolio completo
                             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -347,7 +345,7 @@ export default function Inicio() {
             <section
                 id="contacto"
                 className="relative py-24 overflow-hidden
-               bg-linear-to-br from-slate-50 via-white to-blue-50"
+                            bg-linear-to-br from-slate-50 via-white to-blue-50"
             >
                 {/* ===== Background estilo mapa ===== */}
                 <div className="absolute inset-0 pointer-events-none">
@@ -423,9 +421,9 @@ export default function Inicio() {
                             target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-3 px-8 py-4
-                           bg-green-600 hover:bg-green-700
-                           text-white rounded-full font-semibold
-                           shadow-lg hover:scale-105 transition"
+                                    bg-green-600 hover:bg-green-700
+                                    text-white rounded-full font-semibold
+                                    shadow-lg hover:scale-105 transition"
                         >
                             <MessageCircle className="w-5 h-5" />
                             WhatsApp directo

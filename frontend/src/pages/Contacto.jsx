@@ -141,7 +141,7 @@ export default function Contacto() {
                         className={`
                             rounded-2xl overflow-hidden shadow-xl
                             bg-white border border-slate-200
-                            h-[420px] transition-all duration-300
+                            h-105 transition-all duration-300
                             ${mostrandoRuta ? "ring-2 ring-slate-400" : ""}
                         `}
                     >
