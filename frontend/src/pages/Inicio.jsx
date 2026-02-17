@@ -144,46 +144,56 @@ export default function Inicio() {
                         {/* Flecha izquierda */}
                         <button
                             onClick={() => scrollManual("left")}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30
-                   w-12 h-12 rounded-full
-                   bg-white/90 backdrop-blur-md
-                   shadow-lg border border-gray-200
-                   flex items-center justify-center
-                   opacity-0 group-hover:opacity-100
-                   transition duration-300 hover:scale-110"
+                            className="
+        absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30
+        w-9 h-9 md:w-12 md:h-12 rounded-full
+        bg-white/95 backdrop-blur-md
+        shadow-lg border border-gray-200
+        flex items-center justify-center
+        opacity-100 md:opacity-0 md:group-hover:opacity-100
+        transition duration-300 hover:scale-110 active:scale-95
+        "
                         >
-                            <ArrowLeft className="w-5 h-5 text-gray-700" />
+                            <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
                         </button>
 
                         {/* Flecha derecha */}
                         <button
                             onClick={() => scrollManual("right")}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30
-                   w-12 h-12 rounded-full
-                   bg-white/90 backdrop-blur-md
-                   shadow-lg border border-gray-200
-                   flex items-center justify-center
-                   opacity-0 group-hover:opacity-100
-                   transition duration-300 hover:scale-110"
+                            className="
+        absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30
+        w-9 h-9 md:w-12 md:h-12 rounded-full
+        bg-white/95 backdrop-blur-md
+        shadow-lg border border-gray-200
+        flex items-center justify-center
+        opacity-100 md:opacity-0 md:group-hover:opacity-100
+        transition duration-300 hover:scale-110 active:scale-95
+        "
                         >
-                            <ArrowRight className="w-5 h-5 text-gray-700" />
+                            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
                         </button>
 
-                        {/* Fade lateral elegante */}
-                        <div className="absolute left-0 top-0 h-full w-24 bg-linear-to-r from-white to-transparent z-20 pointer-events-none" />
-                        <div className="absolute right-0 top-0 h-full w-24 bg-linear-to-l from-white to-transparent z-20 pointer-events-none" />
+                        {/* Fade lateral (más pequeño en móvil) */}
+                        <div className="absolute left-0 top-0 h-full w-10 md:w-24 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
+                        <div className="absolute right-0 top-0 h-full w-10 md:w-24 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
 
                         {/* Contenedor scroll */}
                         <div
                             ref={carruselRef}
                             onMouseEnter={() => setPaused(true)}
                             onMouseLeave={() => setPaused(false)}
-                            className="flex gap-10 overflow-x-hidden px-6"
+                            className="
+        flex gap-6 md:gap-10
+        overflow-x-auto md:overflow-x-hidden
+        scroll-smooth
+        px-4 md:px-6
+        scrollbar-hide
+        "
                         >
-                            {[...servicios, ...servicios].map((servicio, index) => (
+                            {servicios.slice(0, 4).map((servicio, index) => (
                                 <div
-                                    key={index}
-                                    className="min-w-70 md:min-w-85 cursor-pointer group"
+                                    key={servicio.id}
+                                    className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px] cursor-pointer group"
                                     onClick={() =>
                                         navigate("/servicios", {
                                             state: { servicioId: servicio.id },
@@ -191,25 +201,32 @@ export default function Inicio() {
                                     }
                                 >
                                     <div
-                                        className="relative h-105 rounded-[2.5rem] overflow-hidden
-                               bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-                               border border-gray-100
-                               transition-all duration-500
-                               group-hover:-translate-y-3
-                               group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.15)]"
+                                        className="
+                relative h-[420px] sm:h-[460px] md:h-[520px]
+                rounded-3xl md:rounded-[2.5rem]
+                overflow-hidden
+                bg-white
+                shadow-[0_15px_40px_rgba(0,0,0,0.08)]
+                border border-gray-100
+                transition-all duration-500
+                md:group-hover:-translate-y-3
+                md:group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.15)]
+            "
                                     >
                                         <img
                                             src={servicio.imagen}
                                             alt={servicio.titulo}
-                                            className="absolute inset-0 w-full h-full object-cover
-                                   transition-transform duration-700
-                                   group-hover:scale-105"
+                                            className="
+                    absolute inset-0 w-full h-full object-cover
+                    transition-transform duration-700
+                    md:group-hover:scale-105
+                "
                                         />
 
-                                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                                        <div className="relative z-10 h-full flex flex-col justify-end p-8 text-white">
-                                            <h3 className="text-2xl font-bold mb-3">
+                                        <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
+                                            <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">
                                                 {servicio.titulo}
                                             </h3>
 
@@ -217,16 +234,93 @@ export default function Inicio() {
                                                 {servicio.descripcion}
                                             </p>
 
-                                            <div className="mt-6 flex items-center gap-2 text-cyan-400 font-medium text-sm opacity-0
-                                        group-hover:opacity-100 transition duration-300">
+                                            <div className="
+                                                            mt-4 md:mt-6
+                                                            flex items-center gap-2
+                                                            text-cyan-400 font-medium text-sm
+                                                            opacity-100 md:opacity-0
+                                                            md:group-hover:opacity-100
+                                                            transition duration-300
+                                                                                    ">
                                                 Explorar servicio →
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ))}
+
+                            {/* CARD MÁS SERVICIOS */}
+                            <div
+                                className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px] cursor-pointer group"
+                                onClick={() =>
+                                    navigate("/servicios", {
+                                        state: { soloNuevos: true },
+                                    })
+                                }
+                            >
+                                <div
+                                    className="
+                                                relative h-[420px] sm:h-[460px] md:h-[520px]
+                                                rounded-3xl md:rounded-[2.5rem]
+                                                overflow-hidden
+                                                shadow-[0_15px_40px_rgba(0,0,0,0.12)]
+                                                border border-gray-100
+                                                transition-all duration-500
+                                                md:group-hover:-translate-y-3
+                                                md:group-hover:shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+                                            "
+                                >
+                                    {/* Imagen de fondo */}
+                                    <img
+                                        src="/img/17.webp"
+                                        alt="Explorar más servicios"
+                                        className="
+                                                    absolute inset-0 w-full h-full object-cover
+                                                    transition-transform duration-700
+                                                    md:group-hover:scale-105
+                                                "
+                                    />
+
+                                    {/* Overlay oscuro elegante */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+
+                                    {/* Contenido */}
+                                    <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
+
+                                        <div className="mb-4">
+                                            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md
+                                flex items-center justify-center
+                                border border-white/30">
+                                                <span className="text-2xl font-light">+</span>
+                                            </div>
+                                        </div>
+
+                                        <h3 className="text-xl md:text-2xl font-bold mb-2">
+                                            Más servicios
+                                        </h3>
+
+                                        <p className="text-sm text-gray-200 leading-relaxed">
+                                            Descubre todo nuestro catálogo y encuentra la solución ideal para ti.
+                                        </p>
+
+                                        <div className="
+                                                        mt-6
+                                                        flex items-center gap-2
+                                                        text-cyan-400 font-medium text-sm
+                                                        opacity-100 md:opacity-0
+                                                        md:group-hover:opacity-100
+                                                        transition duration-300
+                                                    ">
+                                            Ver catálogo completo →
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
+
 
 
                     {/* CTA */}

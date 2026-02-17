@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { servicios } from "../data/servicios";
 import FeedbackModal from "../components/FeedbackModal";
+
+
 import {
     SlidersHorizontal,
     Search,
@@ -13,6 +15,7 @@ import {
 export default function Servicios() {
 
     const location = useLocation();
+
 
     const [servicioActivo, setServicioActivo] = useState(null);
     const [detalleIndex, setDetalleIndex] = useState(null);
@@ -26,10 +29,15 @@ export default function Servicios() {
     const [busqueda, setBusqueda] = useState("");
     const [categoria, setCategoria] = useState("Todos");
     const [orden, setOrden] = useState("az");
+    const [soloNuevos, setSoloNuevos] = useState(false);
+
 
     // ================= PAGINACIÓN =================
     const [paginaActual, setPaginaActual] = useState(1);
     const serviciosPorPagina = 6;
+    const cardsRef = useRef(null);
+    const [animando, setAnimando] = useState(false);
+
 
     const categorias = ["Todos", ...new Set(servicios.map(s => s.categoria))];
 
@@ -47,8 +55,25 @@ export default function Servicios() {
 
     // Reset página cuando cambian filtros
     useEffect(() => {
+        if (cardsRef.current) {
+            cardsRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }, [paginaActual]);
+
+    useEffect(() => {
         setPaginaActual(1);
-    }, [busqueda, categoria, orden]);
+    }, [busqueda, categoria, orden, soloNuevos]);
+    
+    useEffect(() => {
+        if (location.state?.soloNuevos) {
+            setSoloNuevos(true);
+        }
+    }, [location.state]);
+
+
 
     const cerrarModal = () => {
         setServicioActivo(null);
@@ -88,7 +113,8 @@ export default function Servicios() {
     const serviciosFiltrados = servicios
         .filter(s =>
             s.titulo.toLowerCase().includes(busqueda.toLowerCase()) &&
-            (categoria === "Todos" || s.categoria === categoria)
+            (categoria === "Todos" || s.categoria === categoria) &&
+            (!soloNuevos || s.nuevo === true)
         )
         .sort((a, b) =>
             orden === "az"
@@ -103,9 +129,16 @@ export default function Servicios() {
     const totalPaginas = Math.ceil(serviciosFiltrados.length / serviciosPorPagina);
 
     const cambiarPagina = (num) => {
-        setPaginaActual(num);
-        window.scrollTo({ top: 700, behavior: "smooth" });
+        if (num === paginaActual) return;
+
+        setAnimando(true);
+
+        setTimeout(() => {
+            setPaginaActual(num);
+            setAnimando(false);
+        }, 150);
     };
+
 
     return (
         <>
@@ -132,8 +165,51 @@ export default function Servicios() {
                 </div>
             </section>
 
+            {/* ================= FILTRO NUEVOS ================= */}
+            <div className="mt-10 flex justify-center px-4">
+
+                <div className="w-full sm:w-auto flex items-center justify-between sm:justify-center
+                    gap-6 bg-white border border-gray-200
+                    rounded-2xl px-6 py-4 shadow-sm">
+
+                    <div className="text-left">
+                        <p className="text-sm font-semibold text-gray-900">
+                            Servicios nuevos
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Mostrar únicamente los más recientes
+                        </p>
+                    </div>
+
+                    {/* Toggle Switch */}
+                    <button
+                        onClick={() => setSoloNuevos(!soloNuevos)}
+                        className={`
+                relative inline-flex h-7 w-14 items-center rounded-full
+                transition-colors duration-300 focus:outline-none
+                ${soloNuevos ? "bg-blue-600" : "bg-gray-300"}
+            `}
+                    >
+                        <span
+                            className={`
+                    inline-block h-5 w-5 transform rounded-full bg-white shadow-md
+                    transition-transform duration-300
+                    ${soloNuevos ? "translate-x-7" : "translate-x-1"}
+                `}
+                        />
+                    </button>
+
+                </div>
+            </div>
+
+
             {/* ================= CARDS ================= */}
-            <section className="pt-16 pb-24 bg-slate-50">
+            <section
+                ref={cardsRef}
+                className={`pt-16 pb-24 bg-slate-50 transition-all duration-300
+    ${animando ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}
+            >
+
                 <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-3 gap-12">
 
 
@@ -154,6 +230,14 @@ export default function Servicios() {
                             transition-all duration-500"
                         >
                             <div className="relative h-52 overflow-hidden">
+                                {servicio.nuevo && (
+                                    <span className="absolute top-4 left-4 z-10
+            px-4 py-1 text-xs font-bold uppercase tracking-wide
+            bg-blue-600 text-white rounded-full shadow-md">
+                                        Nuevo
+                                    </span>
+                                )}
+
                                 <img
                                     src={servicio.imagen}
                                     alt={servicio.titulo}

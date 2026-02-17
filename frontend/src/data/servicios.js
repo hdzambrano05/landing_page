@@ -121,6 +121,7 @@ export const servicios = [
         titulo: "Seguros de Movilidad",
         descripcion: "Protección integral para vehículos con coberturas obligatorias y complementarias.",
         imagen: "/img/13.jpg",
+        nuevo: true,
         detalles: [
             {
                 titulo: "SOAT - Seguro Obligatorio",
@@ -146,6 +147,7 @@ export const servicios = [
         titulo: "Seguros de Bienestar y Salud",
         descripcion: "Protección para la salud personal y familiar con coberturas integrales y complementarias.",
         imagen: "/img/10.webp",
+        nuevo: true,
         detalles: [
             {
                 titulo: "Seguro de Salud / Medicina Prepagada",
@@ -171,6 +173,7 @@ export const servicios = [
         titulo: "Seguros Laborales y de Ley",
         descripcion: "Cumplimiento normativo y protección legal para empresas y trabajadores.",
         imagen: "/img/11.jpg",
+        nuevo: true,
         detalles: [
             {
                 titulo: "ARL - Administradora de Riesgos Laborales",
@@ -192,6 +195,7 @@ export const servicios = [
         titulo: "Seguros de Hogar y Arrendamiento",
         descripcion: "Protección para viviendas, propiedades y relaciones contractuales inmobiliarias.",
         imagen: "/img/12.jpg",
+        nuevo: true,
         detalles: [
             {
                 titulo: "Seguro de Hogar",
@@ -213,6 +217,7 @@ export const servicios = [
         titulo: "Seguros Empresariales y de Cumplimiento",
         descripcion: "Protección integral para empresas, contratos y responsabilidades profesionales.",
         imagen: "/img/14.jpg",
+        nuevo: true,
         detalles: [
             {
                 titulo: "Pólizas de Cumplimiento",
@@ -242,6 +247,7 @@ export const servicios = [
         titulo: "Seguros Especializados",
         descripcion: "Soluciones de seguro adaptadas a necesidades específicas y sectores especializados.",
         imagen: "/img/15.png",
+        nuevo: true,
         detalles: [
             {
                 titulo: "Seguros Agrícolas y Pecuarios",
