@@ -65,7 +65,7 @@ export default function Navbar() {
                                         after:absolute
                                         after:left-1/2
                                         after:-bottom-2
-                                        after:h-[2px]
+                                        after:h-0.5
                                         after:bg-blue-500
                                         after:transition-all
                                         after:duration-300
@@ -85,7 +85,7 @@ export default function Navbar() {
                             href="https://wa.me/573008580721"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 
+                            className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-500 
                             hover:from-blue-500 hover:to-blue-400 
                             text-white rounded-full font-semibold 
                             shadow-lg shadow-blue-600/20 
@@ -169,7 +169,7 @@ export default function Navbar() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block w-full text-center py-4 mt-10
-                            bg-gradient-to-r from-blue-600 to-blue-500
+                            bg-linear-to-r from-blue-600 to-blue-500
                             text-white font-bold rounded-2xl
                             shadow-xl shadow-blue-600/30
                             transition hover:scale-105 active:scale-95"
